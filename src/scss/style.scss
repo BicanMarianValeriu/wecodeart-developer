@@ -1,0 +1,25 @@
+/*!
+Theme Name: WeCodeArt Developer
+Theme URI: https://www.wecodeart.com/
+Template: wecodeart
+Author: Bican Marian Valeriu
+Author URI: https://www.iambican.com/
+Description: WeCodeArt Developer Starter Theme.
+Version: 0.1.0
+License: TBA
+License URI: TBA
+Tags: light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+Text Domain:  wecodeart-developer
+!*/
+
+.sample-class {
+    color: blue;
+
+    &__with {
+        font-size: 16px;
+
+        &--modifier {
+            font-size: 18px;
+        }
+    }
+}
