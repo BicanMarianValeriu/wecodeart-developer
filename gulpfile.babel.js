@@ -27,9 +27,9 @@ const genericTask = (mode, context = 'building') => {
 
 	// Combine all booting tasks into one array!
 	const allBootingTasks = [
-		Object.assign(deleteBuild(mode, 'css'), { displayName: `Booting Styles Task: Clean - ${modeName}` }),
+		Object.assign(deleteBuild(mode, 'dev/css'), { displayName: `Booting Styles Task: Clean - ${modeName}` }),
 		Object.assign(buildStyles(mode), { displayName: `Booting Styles Task: Build - ${modeName}` }),
-		Object.assign(deleteBuild(mode, 'js'), { displayName: `Booting Scripts Task: Clean - ${modeName}` }),
+		Object.assign(deleteBuild(mode, 'dev/js'), { displayName: `Booting Scripts Task: Clean - ${modeName}` }),
 		Object.assign(buildScripts(mode), { displayName: `Booting Scripts Task: Build - ${modeName}` })
 	];
 

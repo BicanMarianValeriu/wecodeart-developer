@@ -9,16 +9,8 @@ import browserSync from 'browser-sync';
 import through from 'through2';
 import vinylNamed from 'vinyl-named';
 import webpack from 'webpack';
-import webpackStream from 'webpack-stream';
+import webpackStream from 'webpack-stream'; 
 
-// Browserify Deps
-import glob from 'glob'; // Used for webpack but in the config
-import babelify from 'babelify';
-import browserify from 'browserify';
-import vinylBuffer from "vinyl-buffer";
-import vinylSource from 'vinyl-source-stream';
-
-import paths from '../paths';
 import { srcPath, distPath } from './index';
 
 // This runs the same after any compiler
@@ -33,7 +25,7 @@ const afterBundler = (mode) => {
 		gulpBabel(),
 		...((mode === 'production') ? [gulpUglify()] : []),
 		gulpSourcemaps.write('./'),
-		gulp.dest(distPath('js')),
+		gulp.dest(distPath('dev/js')),
 		browserSync.stream()
 	];
 };
@@ -51,31 +43,6 @@ const buildScriptsWithWebpack = (mode) => (done) => {
 		webpackStream(streamMode, webpack),
 		...afterBundler(mode)
 	], done) : undefined;
-};
+}; 
 
-const buildScriptsWithBrowserify = (mode) => (done) => {
-	glob('./src/js/routes/*.js', function (err, files) {
-		if (err) done(err);
-		files.map(function (entry) {
-			let route = browserify({ entries: [entry], debug: true })
-				.transform(babelify, { presets: ['@babel/preset-env'] });
-
-			const name = entry.replace('./src/js/', '');
-
-			pump([route.bundle(), vinylSource(name), vinylBuffer(), ...afterBundler(mode)], done);
-		});
-	});
-
-	// Main Bundle
-	let bundle = browserify({ entries: [paths.entry.js.main], debug: true })
-		.transform(babelify, { presets: ['@babel/preset-env'] });
-
-	['development', 'production'].includes(mode) ? pump([
-		bundle.bundle(),
-		vinylSource('wecodeart-bundle.js'),
-		vinylBuffer(),
-		...afterBundler(mode)
-	], done) : undefined;
-};
-
-export { buildScriptsWithWebpack, buildScriptsWithBrowserify };
+export { buildScriptsWithWebpack };

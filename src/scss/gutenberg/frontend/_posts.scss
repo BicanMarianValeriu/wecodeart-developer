@@ -1,0 +1,55 @@
+.wp-block-latest-posts {
+    &.is-grid {
+        @include make-row();
+
+        li {
+            margin: 0;
+            @include make-col-ready();
+            @include make-col( 12 );
+        }
+
+        &.columns { 
+            &-3,
+            &-4,
+            &-5 {
+                li {
+                    @include media-breakpoint-up( md ) {
+                        @include make-col( 6 );
+                    }
+                }
+            }
+
+            &-2 {
+                li {
+                    @include media-breakpoint-up( lg ) {
+                        @include make-col( 6 );
+                    }
+                }
+            }
+
+            &-3 {
+                li {
+                    @include media-breakpoint-up( lg ) {
+                        @include make-col( 4 );
+                    }
+                }
+            } 
+
+            &-4 {
+                li {
+                    @include media-breakpoint-up( lg ) {
+                        @include make-col( 3 );
+                    }
+                }
+            } 
+
+            &-5 {
+                li {
+                    @include media-breakpoint-up( lg ) {
+                        @include make-col( 2 );
+                    }
+                }
+            } 
+        }
+    }
+}

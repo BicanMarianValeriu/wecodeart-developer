@@ -9,7 +9,6 @@ import gulpSourcemaps from 'gulp-sourcemaps';
 
 import { srcPath, distPath } from './index';
 
-import paths from '../paths';
 import config from './../config';
 
 // Build Styles Task
@@ -24,13 +23,13 @@ const buildStyles = (mode) => (done) => {
 	];
 
 	['development', 'production'].includes(mode) ? pump([
-		gulp.src(paths.entry.scss.main),
+		gulp.src(srcPath('scss')),
 		gulpSourcemaps.init({ loadMaps: true }),
 		gulpSASS({ outputStyle }),
 		...((mode === 'production') ? [gulpCleanCSS(config.cleanCSS)] : []),
 		gulpPostCSS(postcssPlugins),
 		gulpSourcemaps.write('./'),
-		gulp.dest(distPath('css')),
+		gulp.dest(distPath('dev/css')),
 		browserSync.stream(),
 	], done) : undefined; 
 };

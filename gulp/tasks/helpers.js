@@ -19,7 +19,7 @@ const srcPath = (file, watch = false, bundler = 'webpack') => {
 };
 
 const distPath = (file) => {
-	if (['css', 'js', 'images', 'svg', 'build'].includes(file)) return `./assets/${file}`;
+	if (['dev/css', 'dev/js', 'images', 'build'].includes(file)) return `./assets/${file}`;
 	console.error('Unsupported file type entered into Gulp Task Runner for Dist Path');
 };
 
@@ -28,11 +28,11 @@ const deleteBuild = (mode, assetType) => () => {
 };
 
 const revisionFiles = () => {
-	let stream1 = gulp.src(distPath('css').concat('/**/*.css'))
+	let stream1 = gulp.src(distPath('dev/css').concat('/**/*.css'))
 		.pipe(gulpRevAll.revision())
 		.pipe(gulp.dest(paths.output.build.concat('/css')));
 	// Only for top level since the routes uses different cache busting method
-	let stream2 = gulp.src(distPath('js').concat('/*.js'))
+	let stream2 = gulp.src(distPath('dev/js').concat('/*.js'))
 		.pipe(gulpRevAll.revision())
 		.pipe(gulp.dest(paths.output.build.concat('js')));
 	// Run merge

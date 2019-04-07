@@ -1,15 +1,16 @@
+@charset "UTF-8";
 /*!
-Theme Name: WeCodeArt Developer
+Theme Name: WeCodeArt Dev Skin
 Theme URI: https://www.wecodeart.com/
 Template: wecodeart
 Author: Bican Marian Valeriu
 Author URI: https://www.iambican.com/
-Description: WeCodeArt Developer Starter Theme.
-Version: 1.0.0
+Description: WeCodeArt Child Theme used on main website.
+Version: 1.1.0
 License: TBA
 License URI: TBA
 Tags: light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
-Text Domain:  wecodeart-developer
+Text Domain:  wecodeart-skin
 !*/
 
 // Required
@@ -53,7 +54,8 @@ Text Domain:  wecodeart-developer
 //@import "../../node_modules/bootstrap/scss/utilities/borders";
 //@import "../../node_modules/bootstrap/scss/utilities/embed";
 //@import "../../node_modules/bootstrap/scss/utilities/overflow";
-//@import "../../node_modules/bootstrap/scss/utilities/position"; 
+//@import "../../node_modules/bootstrap/scss/utilities/position";
+
 //@import "../../node_modules/bootstrap/scss/badge";
 //@import "../../node_modules/bootstrap/scss/popover";
 //@import "../../node_modules/bootstrap/scss/navbar";
@@ -69,3 +71,23 @@ Text Domain:  wecodeart-developer
 //@import "../../node_modules/bootstrap/scss/progress";
 //@import "../../node_modules/bootstrap/scss/spinners";
 //@import "../../node_modules/bootstrap/scss/toasts";
+
+/* Base WP + WeCodeart */
+@import 'base/base';
+
+/* Helpers Classes */
+@import 'helpers/helpers';
+
+/* Vendor */
+//@import 'vendor/animate';
+//@import 'vendor/slickslider'; 
+
+/* Custom Components */
+@import 'components/header'; 
+@import 'components/entry';     
+@import 'components/author'; 
+@import 'components/comments'; 
+@import 'components/footer'; 
+
+/* Gutenberg */
+@import 'gutenberg/frontend'; 

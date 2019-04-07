@@ -1,0 +1,26 @@
+/* 	= Footer Area
+--------------------------------------------------------------- */
+.footer {
+	font-size: 14px;
+
+	.widget-title {
+		padding: 1rem 0;
+		font-size: 17px;
+		font-weight: bold;	
+		text-align: left;
+		text-transform: uppercase; 
+	}  
+}
+
+.attribution {
+	font-size: 13px; 
+	color: #6a6e79;  
+
+	a:not(.button) {
+		color: #6a6e79; 
+
+		&:hover {
+			color: #089cff;
+		}
+	}
+}

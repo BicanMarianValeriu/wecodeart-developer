@@ -2,37 +2,23 @@
 /**
  * WeCodeArt Dev 
  *
- * @package 		WeCodeArt Dev 
- * @subpackage 	Scripts
+ * @package		WeCodeArt Dev 
+ * @subpackage	Scripts
  * @copyright   Copyright (c) 2019, WeCodeArt Dev
- * @link    		https://www.wecodeart.com/
- * @since				1.0.0 
+ * @link		https://www.wecodeart.com/
+ * @since		1.1.0 
  * 
  */
  
 class Scripts {  
-	/**
-	 * Instance
-	 *
-	 * @access 	private
-	 * @var 	object
-	 */
-	private static $instance;
-
-	/**
-	 * Initiator
-	 */
-	public static function get_instance() {
-		if( ! isset( self::$instance ) ) self::$instance = new self;
-		return self::$instance;
-	}
+	use \WeCodeArt\Singleton;
 	
-    /**
-	 * Construtor
+	/**
+	 * Send Construtor
 	 */
-	public function __construct() {
-		$this->is_local = ( isset( $_SERVER['SERVER_ADDR'] ) && $_SERVER['SERVER_ADDR'] === '127.0.0.1' ) ? true : false;
-		$this->is_build = ( $this->is_local === false ) ? 'build/' : ''; 
+	public function init() { 
+		$this->is_local 	= ( isset( $_SERVER['SERVER_ADDR'] ) && $_SERVER['SERVER_ADDR'] === '127.0.0.1' ) ? true : false;
+		$this->assets_dir 	= ( $this->is_local ) ? 'dev' : 'build'; 
 
 		add_action( 'init',					[ $this, 'clean_head' ] );
 		add_action( 'wp_head', 				[ $this, 'google_font' ] ); 
@@ -47,13 +33,14 @@ class Scripts {
 	 */
 	public function enqueue_scripts_styles() {
 		$bundle_deps = [ 'jquery' ]; 
+		$polyfill_cdn = '//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.2.5/polyfill.min.js';
 
-		wp_enqueue_script( 'babel-polyfill', '//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.2.5/polyfill.min.js', [], null, true  );
-		wp_script_add_data( 'babel-polyfill', 'conditional', 'IE' ); 
+		wp_enqueue_script( 'babel-polyfill', $polyfill_cdn, [], null, true  );
+		//wp_script_add_data( 'babel-polyfill', 'conditional', 'IE' ); 
 
 		foreach( [ 'css', 'js' ] as $dir ) {
 
-			$buildDir = new \DirectoryIterator( STYLESHEETPATH . '/assets/' . $this->is_build . $dir ); 
+			$buildDir = new \DirectoryIterator( STYLESHEETPATH . '/assets/' . $this->assets_dir.'/' . $dir ); 
 
 			foreach( $buildDir as $file ) { 
 
@@ -82,7 +69,7 @@ class Scripts {
      */
 	public function get_asset_uri( $file, $directory ) { 
 		if( ! $file && ! $type ) return;  
-		return esc_url( get_theme_file_uri( '/assets/' . $this->is_build . $directory . '/' . basename( $file ) ) ); 
+		return esc_url( get_theme_file_uri( '/assets/' . $this->assets_dir . '/' . $directory . '/' . basename( $file ) ) ); 
     }
     
     /**
@@ -100,25 +87,26 @@ class Scripts {
 	 */
 	public function clean_head() {
 		// Clean Header of unnecesary code
-		remove_action( 'wp_head',               'wlwmanifest_link'                  );
-		remove_action( 'wp_head',               'rsd_link'                          );
-		remove_action( 'wp_head',               'feed_links', 2                     );
-		remove_action( 'wp_head',               'feed_links_extra', 3               );
-		remove_action( 'wp_head',               'wp_generator'                      );
-		remove_action( 'wp_head',               'wp_shortlink_wp_head'              );
-		remove_action( 'wp_head',               'wp_oembed_add_discovery_links'     );
-		remove_action( 'wp_head',               'rest_output_link_wp_head'          );
-		remove_action( 'template_redirect',     'rest_output_link_header', 11, 0    );
-		remove_action( 'wp_head',               'print_emoji_detection_script', 7   );
-		remove_action( 'wp_print_styles',       'print_emoji_styles'                );	
+		remove_action( 'wp_head',			'wlwmanifest_link'                  );
+		remove_action( 'wp_head',			'rsd_link'                          );
+		remove_action( 'wp_head',			'feed_links', 2                     );
+		remove_action( 'wp_head',			'feed_links_extra', 3               );
+		remove_action( 'wp_head',			'wp_generator'                      );
+		remove_action( 'wp_head',			'wp_shortlink_wp_head'              );
+		remove_action( 'wp_head',			'wp_oembed_add_discovery_links'     );
+		remove_action( 'wp_head',			'rest_output_link_wp_head'          );
+		remove_action( 'template_redirect',	'rest_output_link_header', 11, 0    );
+		remove_action( 'wp_head',			'print_emoji_detection_script', 7   );
+		remove_action( 'wp_print_styles',	'print_emoji_styles'                );	
 	}  
 
 	/**
 	 * Google Fonts
 	 */
 	public function google_font() { 
+		$font_url = 'https://fonts.googleapis.com/css?family=Montserrat:300,400,600|Open+Sans:300,400,700|Shadows+Into+Light';
 	?>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600|Open+Sans:300,400,700|Shadows+Into+Light">
+		<link rel="stylesheet" href="<?php echo esc_url( $font_url ); ?>">
 	<?php
 	}
 

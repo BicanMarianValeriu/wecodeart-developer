@@ -1,0 +1,78 @@
+/* 	= Helpers
+--------------------------------------------------------------- */
+.text {
+    text-rendering: optimizeLegibility;
+
+    &--center {
+        text-align: center;
+    }
+
+    &--left {
+        text-align: left;
+    }
+
+    &--right {
+        text-align: right;
+    }
+
+    &--justify {
+        text-align: justify;
+    }
+
+    &--uppercase {
+        text-transform: uppercase;
+    }
+
+    &--lowercase {
+        text-transform: lowercase;
+    }
+
+    &--capitalize {
+        text-transform: capitalize;
+    }
+
+    &--color-brand {
+        color: theme-color(primary);
+    }
+
+    &--thin {
+        font-weight: 100;
+    }
+
+    &--light {
+        font-weight: 300;
+    }
+
+    &--bold {
+        font-weight: bold;
+    }
+
+    &--font-alt {
+        font-family: "Shadows Into Light", cursive;
+    }
+}
+
+/* Animations */
+@-webkit-keyframes pulse {
+    0% {
+        background-color: transparent;
+    }
+    70% {
+        background-color: white;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        background-color: transparent;
+    }
+    70% {
+        background-color: white;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
