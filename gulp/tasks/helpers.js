@@ -1,25 +1,29 @@
-import gulp from 'gulp';
 import del from 'del';
-import merge from 'merge-stream';
-import gulpRevAll from 'gulp-rev-all';
 import paths from '../paths';
 import wpEntry from './../webpack/entry';
 
 // Transform Entry point into an Array for defining in gulp file
 const entryArray = Object.values(wpEntry);
 
-const srcPath = (file, watch = false, bundler = 'webpack') => {
+const srcPath = (file, watch = false) => {
 	if (file === 'scss' && watch === false) return paths.entry.scss.main;
 	if (file === 'scss' && watch === true) return paths.entry.scss.watch;
 	if (file === 'svg' && watch === false) return paths.entry.svg;
 	if (file === 'svg' && watch === true) return paths.entry.svg;
-	if (file === 'js' && watch === false) return bundler === 'webpack' ? entryArray : paths.entry.js.main;
+	if (file === 'js' && watch === false) return entryArray;
 	if (file === 'js' && watch === true) return paths.entry.js.watch;
 	console.error('Unsupported file type entered into Gulp Task Runner for Source Path');
 };
 
 const distPath = (file) => {
-	if (['dev/css', 'dev/js', 'images', 'build'].includes(file)) return `./assets/${file}`;
+	if ([
+		'unminified/css', 
+		'unminified/js',
+		'minified/css',
+		'minified/js',
+		'minified',
+		'images' 
+	].includes(file)) return `./assets/${file}`;
 	console.error('Unsupported file type entered into Gulp Task Runner for Dist Path');
 };
 
@@ -27,16 +31,4 @@ const deleteBuild = (mode, assetType) => () => {
 	return ['development', 'production'].includes(mode) ? del([distPath(assetType)]) : undefined;
 };
 
-const revisionFiles = () => {
-	let stream1 = gulp.src(distPath('dev/css').concat('/**/*.css'))
-		.pipe(gulpRevAll.revision())
-		.pipe(gulp.dest(paths.output.build.concat('/css')));
-	// Only for top level since the routes uses different cache busting method
-	let stream2 = gulp.src(distPath('dev/js').concat('/*.js'))
-		.pipe(gulpRevAll.revision())
-		.pipe(gulp.dest(paths.output.build.concat('js')));
-	// Run merge
-	return merge(stream1, stream2);
-};
-
-export { srcPath, distPath, deleteBuild, revisionFiles };
+export { srcPath, distPath, deleteBuild };

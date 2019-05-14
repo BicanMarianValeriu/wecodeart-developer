@@ -6,13 +6,10 @@ import config from './gulp/config';
 import {
 	srcPath,
 	deleteBuild,
-	buildScriptsWithWebpack as buildScripts, // buildScriptsWithBrowserify 
+	buildScriptsWithWebpack as buildScripts, // buildScriptsWithBrowserify
 	buildStyles,
-	compileSVG,
-	revisionFiles
-} from './gulp/tasks';
-
-var project_slug = 'wecodeart';
+	compileSVG
+} from './gulp/tasks'; 
 
 // Browsersync
 const bsync = proxy => browserSync.init(config.browserSync(proxy));
@@ -25,29 +22,29 @@ const genericTask = (mode, context = 'building') => {
 	else if (mode === 'production') modeName = 'Production Mode';
 	else modeName = undefined;
 
-	// Combine all booting tasks into one array!
+	// Combine all tasks into one array!
 	const allBootingTasks = [
-		Object.assign(deleteBuild(mode, 'dev/css'), { displayName: `Booting Styles Task: Clean - ${modeName}` }),
-		Object.assign(buildStyles(mode), { displayName: `Booting Styles Task: Build - ${modeName}` }),
-		Object.assign(deleteBuild(mode, 'dev/js'), { displayName: `Booting Scripts Task: Clean - ${modeName}` }),
-		Object.assign(buildScripts(mode), { displayName: `Booting Scripts Task: Build - ${modeName}` })
+		Object.assign(deleteBuild(mode, 'minified/css'), { displayName: `Running Styles Task: Clean - ${modeName}` }),
+		Object.assign(buildStyles(mode), { displayName: `Running Styles Task: Build - ${modeName}` }),
+		Object.assign(deleteBuild(mode, 'minified/js'), { displayName: `Running Scripts Task: Clean - ${modeName}` }),
+		Object.assign(buildScripts(mode), { displayName: `Running Scripts Task: Build - ${modeName}` })
 	];
 
 	// Browser Loading & Watching
 	const browserLoadingWatching = (done) => {
-		bsync('http://working.on/' + project_slug);
+		bsync('https://working.on/wecodeart');
 
 		// Watch - Styles
 		gulp.watch(srcPath('scss', true))
 			.on('all', gulp.series( // Issue with pump file generation, not important but we cannot pre-delete
-				/* Object.assign(deleteBuild(mode, 'css'), { displayName: `Watching Styles Task: Clean - ${modeName}` }), */
+				Object.assign(deleteBuild(mode, 'unminified/css'), { displayName: `Watching Styles Task: Clean - ${modeName}` }),
 				Object.assign(buildStyles(mode), { displayName: `Watching Styles Task: Build - ${modeName}` }),
 			), browserSync.reload);
 
 		// Watch - Scripts
 		gulp.watch(srcPath('js', true))
 			.on('all', gulp.series(
-				/* Object.assign(deleteBuild(mode, 'js'), { displayName: `Watching Scripts Task: Clean - ${modeName}` }), */
+				Object.assign(deleteBuild(mode, 'unminified/js'), { displayName: `Watching Scripts Task: Clean - ${modeName}` }),
 				Object.assign(buildScripts(mode), { displayName: `Watching Scripts Task: Build - ${modeName}` }),
 			), browserSync.reload);
 	};
@@ -62,9 +59,8 @@ const genericTask = (mode, context = 'building') => {
 
 	if (context === 'compiling') {
 		return [
+			Object.assign(deleteBuild(mode, 'minified'), { displayName: `Running Cleaning Task: Clean - ${modeName}` }),
 			...allBootingTasks,
-			Object.assign(deleteBuild(mode, 'build'), { displayName: `Booting Cache Busting Task: Clean - ${modeName}` }),
-			Object.assign(revisionFiles, { displayName: `Booting Cache Busting Task: Revision - ${modeName}` }),
 		];
 	}
 
@@ -84,12 +80,13 @@ build.description = 'Cleans and build the final source code.';
 /**
  * Exports tasks
  * @instructions 
- * Both serve and build tasks runs the browser sync instance
- * I left them this way just for testing purposes, if minification could possibly cause issues
+ * `gulp serve` for running local server and watch for file changes 
+ * `gulp build` for building final minified code and hash main css/js bundles
+ * `gulp compileSVG` for rebuilding svg sprite if any and is necessary
  */
 
 // Named Exports
-export { serve, build, compileSVG, revisionFiles };
+export { serve, build, compileSVG };
 
 // Default
 export default defaultTask;

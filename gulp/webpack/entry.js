@@ -1,8 +1,8 @@
-//const glob = require('glob');
+const glob = require('glob');
 
 const entryArray = [
-	/* ...glob.sync('./src/js/routes/*.js'), */ 
-	'./src/js/bundle.js', 
+	...glob.sync('./src/js/routes/*.js'), 
+	'./src/js/wecodeart-bundle.js',
 ];
 
 const entryObject = entryArray.reduce((acc, item) => {

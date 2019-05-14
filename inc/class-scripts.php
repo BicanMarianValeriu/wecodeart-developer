@@ -1,39 +1,44 @@
-<?php namespace WeCodeArt\Dev; 
+<?php
 /**
  * WeCodeArt Dev 
  *
  * @package		WeCodeArt Dev 
  * @subpackage	Scripts
- * @copyright   Copyright (c) 2019, WeCodeArt Dev
+ * @copyright	Copyright (c) 2019, WeCodeArt Dev
  * @link		https://www.wecodeart.com/
- * @since		1.1.0 
- * 
+ * @since		1.2.1
  */
- 
-class Scripts {  
+
+namespace WeCodeArt\Dev;
+
+/**
+ * Scripts
+ */
+class Scripts {
+
 	use \WeCodeArt\Singleton;
-	
+
 	/**
 	 * Send Construtor
 	 */
 	public function init() { 
 		$this->is_local 	= ( isset( $_SERVER['SERVER_ADDR'] ) && $_SERVER['SERVER_ADDR'] === '127.0.0.1' ) ? true : false;
-		$this->assets_dir 	= ( $this->is_local ) ? 'dev' : 'build'; 
+		$this->assets_dir	= ( $this->is_local ) ? 'unminified' : 'minified'; 
 
 		add_action( 'init',					[ $this, 'clean_head' ] );
-		add_action( 'wp_head', 				[ $this, 'google_font' ] ); 
+		add_action( 'wp_head',				[ $this, 'google_font' ] ); 
 		add_action( 'wp_enqueue_scripts',	[ $this, 'enqueue_scripts_styles' ] );
 		add_action( 'wp_print_styles', 		[ $this, 'deregister_styles' ], 100 ); 
-		add_filter( 'style_loader_src',     [ $this, 'remove_queries' ], 10, 2 );
-		add_filter( 'script_loader_src',    [ $this, 'remove_queries' ], 10, 2 );	 
-    }
+		add_filter( 'style_loader_src',		[ $this, 'remove_queries' ], 10, 2 );
+		add_filter( 'script_loader_src',	[ $this, 'remove_queries' ], 10, 2 );	 
+	}
 
     /**
 	 * Skin Assets
 	 */
 	public function enqueue_scripts_styles() {
 		$bundle_deps = [ 'jquery' ]; 
-		$polyfill_cdn = '//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.2.5/polyfill.min.js';
+		$polyfill_cdn = '//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.0/polyfill.min.js';
 
 		wp_enqueue_script( 'babel-polyfill', $polyfill_cdn, [], null, true  );
 		//wp_script_add_data( 'babel-polyfill', 'conditional', 'IE' ); 
@@ -70,7 +75,7 @@ class Scripts {
 	public function get_asset_uri( $file, $directory ) { 
 		if( ! $file && ! $type ) return;  
 		return esc_url( get_theme_file_uri( '/assets/' . $this->assets_dir . '/' . $directory . '/' . basename( $file ) ) ); 
-    }
+	}
     
     /**
 	 * Deregister CSS
@@ -79,7 +84,7 @@ class Scripts {
 		wp_deregister_style( 'wecodeart-core' ); 
 		wp_dequeue_style( 'wecodeart-core' );
 		//wp_deregister_style( 'wp-block-library' );
-		//wp_dequeue_style( 'wp-block-library' );  
+		//wp_dequeue_style( 'wp-block-library' ); 
 	}
 	
 	/**

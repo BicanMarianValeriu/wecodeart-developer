@@ -13,15 +13,13 @@ export default {
 		},
 		js: {
 			watch: './src/js/**/*',
-			main: './src/js/bundle.js',
+			main: './src/js/wecodeart-bundle.js',
 			customizer: './src/js/customizer/**/*.js'
 		}
 	},
 
 	output: {
-		build: './assets/build/',
-		css: './assets/css/',
+		build: './assets/minified/',
 		svg: './assets/images/',
-		js: './assets/js/'
 	}
 };

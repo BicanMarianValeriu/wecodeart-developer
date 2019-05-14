@@ -1,13 +1,13 @@
 import { compileSVG } from './svg';
 import { buildStyles } from './styles';
-import { buildScriptsWithWebpack, buildScriptsWithBrowserify } from './scripts';
-import { srcPath, distPath, deleteBuild, revisionFiles } from './helpers';
+import { buildScriptsWithWebpack } from './scripts';
+import { srcPath, distPath, deleteBuild } from './helpers';
 
 export {
-	srcPath, distPath, deleteBuild,
-	buildScriptsWithWebpack, 
-	buildScriptsWithBrowserify,
+	srcPath, 
+	distPath, 
+	deleteBuild,
+	buildScriptsWithWebpack,
 	buildStyles,
-	compileSVG,
-	revisionFiles
+	compileSVG
 };

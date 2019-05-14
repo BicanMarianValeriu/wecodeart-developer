@@ -1,15 +1,16 @@
 import gulp from 'gulp';
 import pump from 'pump';
+import through from 'through2';
 import gulpBabel from 'gulp-babel';
 import gulpUglify from 'gulp-uglify';
+import gulpRevAll from 'gulp-rev-all';
 import gulpSourcemaps from 'gulp-sourcemaps';
 import browserSync from 'browser-sync';
 
 // Webpack Deps
-import through from 'through2';
 import vinylNamed from 'vinyl-named';
 import webpack from 'webpack';
-import webpackStream from 'webpack-stream'; 
+import webpackStream from 'webpack-stream';
 
 import { srcPath, distPath } from './index';
 
@@ -25,7 +26,8 @@ const afterBundler = (mode) => {
 		gulpBabel(),
 		...((mode === 'production') ? [gulpUglify()] : []),
 		gulpSourcemaps.write('./'),
-		gulp.dest(distPath('dev/js')),
+		// Hashing will be done in WebPack ( for routes we dont do hashing as they are meant for lazyloading with JS )
+		...((mode === 'production') ? [gulp.dest(distPath('minified/js'))] : [gulp.dest(distPath('unminified/js'))]),
 		browserSync.stream()
 	];
 };
@@ -43,6 +45,6 @@ const buildScriptsWithWebpack = (mode) => (done) => {
 		webpackStream(streamMode, webpack),
 		...afterBundler(mode)
 	], done) : undefined;
-}; 
+};
 
 export { buildScriptsWithWebpack };

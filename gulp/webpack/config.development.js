@@ -12,22 +12,4 @@ module.exports = {
 	externals: {
 		jquery: 'jQuery'
 	}
-	/* module: {
-		rules: [
-			{ // This tests js files and bundles them
-				test: /\.js?$/,
-				exclude: /(node_modules|bower_components)/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['@babel/preset-env'],
-						plugins: [
-							'@babel/plugin-proposal-object-rest-spread',
-							'@babel/plugin-transform-async-to-generator'
-						]
-					}
-				}
-			}
-		]
-	} */
 };

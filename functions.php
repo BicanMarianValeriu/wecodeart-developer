@@ -2,11 +2,11 @@
 /**
  * WeCodeArt Dev 
  *
- * @package		  WeCodeArt Dev 
+ * @package     WeCodeArt Dev 
  * @subpackage 	Scripts
  * @copyright   Copyright (c) 2019, WeCodeArt Dev
- * @link		    https://www.wecodeart.com/
- * @since		    1.0.0 
+ * @link        https://www.wecodeart.com/
+ * @since       1.0.0 
  * 
  */
 
