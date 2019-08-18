@@ -5,7 +5,6 @@ export default {
 	
 	entry: {
 		css: './assets/css/*.css',
-		svg: './src/svg/**/*.svg',
 		scss: {
 			watch: './src/scss/**/*',
 			main: './src/scss/style.scss',
@@ -20,6 +19,5 @@ export default {
 
 	output: {
 		build: './assets/minified/',
-		svg: './assets/images/',
 	}
 };

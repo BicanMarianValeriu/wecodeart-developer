@@ -1,14 +1,7 @@
 {
     "presets": [
         [
-            "@babel/env",
-            {
-                "targets": {
-                    "browsers": [
-                        "last 3 versions"
-                    ]
-                }
-            }
+            "@babel/env"
         ]
     ],
     "plugins": [ 

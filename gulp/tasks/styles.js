@@ -20,7 +20,7 @@ const buildStyles = (mode) => (done) => {
 	else outputStyle = undefined;
 
 	const postcssPlugins = [
-		autoprefixer(config.autoprefixer)
+		autoprefixer()
 	];
 
 	['development', 'production'].includes(mode) ? pump([

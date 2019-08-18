@@ -3,7 +3,6 @@ import pump from 'pump';
 import through from 'through2';
 import gulpBabel from 'gulp-babel';
 import gulpUglify from 'gulp-uglify';
-import gulpRevAll from 'gulp-rev-all';
 import gulpSourcemaps from 'gulp-sourcemaps';
 import browserSync from 'browser-sync';
 
@@ -33,7 +32,7 @@ const afterBundler = (mode) => {
 };
 
 // Build Scripts Task
-const buildScriptsWithWebpack = (mode) => (done) => {
+const buildScripts = (mode) => (done) => {
 	let streamMode;
 	if (mode === 'development') streamMode = require('./../webpack/config.development.js');
 	else if (mode === 'production') streamMode = require('./../webpack/config.production.js');
@@ -47,4 +46,4 @@ const buildScriptsWithWebpack = (mode) => (done) => {
 	], done) : undefined;
 };
 
-export { buildScriptsWithWebpack };
+export { buildScripts };

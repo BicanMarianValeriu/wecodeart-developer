@@ -1,15 +1,12 @@
-'use strict';
-
 import gulp from 'gulp';
 import browserSync from 'browser-sync';
 import config from './gulp/config';
 import {
 	srcPath,
 	deleteBuild,
-	buildScriptsWithWebpack as buildScripts, // buildScriptsWithBrowserify
-	buildStyles,
-	compileSVG
-} from './gulp/tasks'; 
+	buildScripts,
+	buildStyles
+} from './gulp/tasks';
 
 // Browsersync
 const bsync = proxy => browserSync.init(config.browserSync(proxy));
@@ -82,11 +79,10 @@ build.description = 'Cleans and build the final source code.';
  * @instructions 
  * `gulp serve` for running local server and watch for file changes 
  * `gulp build` for building final minified code and hash main css/js bundles
- * `gulp compileSVG` for rebuilding svg sprite if any and is necessary
  */
 
 // Named Exports
-export { serve, build, compileSVG };
+export { serve, build };
 
 // Default
 export default defaultTask;
