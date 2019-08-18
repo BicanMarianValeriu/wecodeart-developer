@@ -1,4 +1,3 @@
-import { compileSVG } from './svg';
 import { buildStyles } from './styles';
 import { buildScripts } from './scripts';
 import { srcPath, distPath, deleteBuild } from './helpers';
@@ -9,5 +8,4 @@ export {
 	deleteBuild,
 	buildScripts,
 	buildStyles,
-	compileSVG
 };

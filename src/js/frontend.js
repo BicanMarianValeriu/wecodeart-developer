@@ -6,8 +6,8 @@ const object = [
 	{ 'name': 'Klaudio' }
 ];
 
-let logger = () => {
-	var log = find(object, { 'name': 'Bican' });
+const logger = () => {
+	const log = find(object, { 'name': 'Bican' });
 	console.log(log);
 };
 
