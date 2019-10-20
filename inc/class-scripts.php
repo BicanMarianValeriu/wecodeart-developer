@@ -17,13 +17,12 @@ namespace WeCodeArt\Dev;
 class Scripts {
 
 	use \WeCodeArt\Singleton;
+	use \WeCodeArt\Core\Scripts\Base;
 
 	/**
 	 * Send Construtor
 	 */
-	public function init() { 
-		$this->is_local 	= ( isset( $_SERVER['SERVER_ADDR'] ) && $_SERVER['SERVER_ADDR'] === '127.0.0.1' ) ? true : false;
-		$this->assets_dir	= ( $this->is_local ) ? 'unminified' : 'minified'; 
+	public function init() {
 
 		add_action( 'init',					[ $this, 'clean_head' ] );
 		add_action( 'wp_head',				[ $this, 'google_font' ] ); 
@@ -37,44 +36,44 @@ class Scripts {
 	 * Skin Assets
 	 */
 	public function enqueue_scripts_styles() {
-		$bundle_deps = [ 'jquery' ]; 
-		$polyfill_cdn = '//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.0/polyfill.min.js';
+		$data = [
+			'version' 		=> wecodeart( 'version' ),
+			'dependencies'	=> [ 'jquery' ],
+		];
 
-		wp_enqueue_script( 'babel-polyfill', $polyfill_cdn, [], null, true  );
-		//wp_script_add_data( 'babel-polyfill', 'conditional', 'IE' ); 
-
-		foreach( [ 'css', 'js' ] as $dir ) {
-
-			$buildDir = new \DirectoryIterator( STYLESHEETPATH . '/assets/' . $this->assets_dir.'/' . $dir ); 
-
-			foreach( $buildDir as $file ) { 
-
-				$fullName = basename( $file );
-				$name = substr( basename( $fullName ), 0, strpos( basename( $fullName ), '.' ) );
-
-				if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'css' ) { 
-					wp_register_style( $name, $this->get_asset_uri( $file, 'css' ) , [], null );
-					wp_enqueue_style( $name ); 
-				}
-	
-				if ( pathinfo( $file, PATHINFO_EXTENSION ) === 'js' ) {  
-					wp_register_script( $name, $this->get_asset_uri( $file, 'js' ), $bundle_deps, null, true );
-					wp_enqueue_script( $name ); 
-				}
-			} 
+		// CSS
+		$deps = sprintf( '%s/assets/css/%s.php', get_stylesheet_directory(), 'frontend.asset' );
+		if( is_readable( $deps ) ) {
+			$file = require $deps;
+			$data = wp_parse_args( $file, $data );
 		}
-	}
 
-    /**
-     * Get Asset File URL
-     * 
-     * @param   string  $file
-     * @param   string  $directory
-     * 
-     */
-	public function get_asset_uri( $file, $directory ) { 
-		if( ! $file && ! $type ) return;  
-		return esc_url( get_theme_file_uri( '/assets/' . $this->assets_dir . '/' . $directory . '/' . basename( $file ) ) ); 
+		wp_register_style(
+			$this->make_handle(), 
+			get_stylesheet_directory_uri() . '/assets/css/frontend.css',
+			[],
+			$data['version']
+		);
+
+		wp_enqueue_style( $this->make_handle() );
+
+		// JS
+		$deps = sprintf( '%s/assets/js/%s.php', get_stylesheet_directory(), 'frontend.asset' );
+		
+		if( is_readable( $deps ) ) {
+			$file = require $deps;
+			$data = wp_parse_args( $file, $data );
+		}
+
+		wp_register_script( 
+			$this->make_handle(),
+			get_stylesheet_directory_uri() . '/assets/js/frontend.js',
+			$data['dependencies'], 
+			$data['version'], 
+			true 
+		);
+
+		wp_enqueue_script( $this->make_handle() );
 	}
     
     /**
