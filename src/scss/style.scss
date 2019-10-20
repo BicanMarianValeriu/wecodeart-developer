@@ -13,12 +13,12 @@ Tags: light, dark, two-columns, right-sidebar, responsive-layout, accessibility-
 Text Domain:  wecodeart-skin
 !*/
 
-// Required
+/* Required */
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "abstracts/variables";
 
-// Optional
+/* Optional */
 @import "../../node_modules/bootstrap/scss/reboot";
 @import "../../node_modules/bootstrap/scss/type";
 @import "../../node_modules/bootstrap/scss/code";
@@ -36,7 +36,7 @@ Text Domain:  wecodeart-skin
 @import "../../node_modules/bootstrap/scss/root";
 @import "../../node_modules/bootstrap/scss/tables";
 @import "../../node_modules/bootstrap/scss/custom-forms";
-//@import "../../node_modules/bootstrap/scss/utilities";
+/* //@import "../../node_modules/bootstrap/scss/utilities"; */
 @import "../../node_modules/bootstrap/scss/utilities/align";
 @import "../../node_modules/bootstrap/scss/utilities/display";
 @import "../../node_modules/bootstrap/scss/utilities/clearfix";
@@ -51,12 +51,12 @@ Text Domain:  wecodeart-skin
 @import "../../node_modules/bootstrap/scss/utilities/sizing"; 
 @import "../../node_modules/bootstrap/scss/tooltip";
 @import "../../node_modules/bootstrap/scss/transitions"; 
-//@import "../../node_modules/bootstrap/scss/utilities/borders";
+/* //@import "../../node_modules/bootstrap/scss/utilities/borders";
 //@import "../../node_modules/bootstrap/scss/utilities/embed";
 //@import "../../node_modules/bootstrap/scss/utilities/overflow";
-//@import "../../node_modules/bootstrap/scss/utilities/position";
+//@import "../../node_modules/bootstrap/scss/utilities/position"; */
 
-//@import "../../node_modules/bootstrap/scss/badge";
+/* //@import "../../node_modules/bootstrap/scss/badge";
 //@import "../../node_modules/bootstrap/scss/popover";
 //@import "../../node_modules/bootstrap/scss/navbar";
 //@import "../../node_modules/bootstrap/scss/print";
@@ -70,7 +70,7 @@ Text Domain:  wecodeart-skin
 //@import "../../node_modules/bootstrap/scss/modal";
 //@import "../../node_modules/bootstrap/scss/progress";
 //@import "../../node_modules/bootstrap/scss/spinners";
-//@import "../../node_modules/bootstrap/scss/toasts";
+//@import "../../node_modules/bootstrap/scss/toasts"; */
 
 /* Base WP + WeCodeart */
 @import 'base/base';
@@ -79,8 +79,8 @@ Text Domain:  wecodeart-skin
 @import 'helpers/helpers';
 
 /* Vendor */
-//@import 'vendor/animate';
-//@import 'vendor/slickslider'; 
+//* /@import 'vendor/animate';
+//@import 'vendor/slickslider';  */
 
 /* Custom Components */
 @import 'components/header'; 
