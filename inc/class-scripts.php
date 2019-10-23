@@ -6,7 +6,7 @@
  * @subpackage	Scripts
  * @copyright	Copyright (c) 2019, WeCodeArt Dev
  * @link		https://www.wecodeart.com/
- * @since		1.2.1
+ * @since		1.3.0
  */
 
 namespace WeCodeArt\Dev;
@@ -28,8 +28,8 @@ class Scripts {
 		add_action( 'wp_head',				[ $this, 'google_font' ] ); 
 		add_action( 'wp_enqueue_scripts',	[ $this, 'enqueue_scripts_styles' ] );
 		add_action( 'wp_print_styles', 		[ $this, 'deregister_styles' ], 100 ); 
-		add_filter( 'style_loader_src',		[ $this, 'remove_queries' ], 10, 2 );
-		add_filter( 'script_loader_src',	[ $this, 'remove_queries' ], 10, 2 );	 
+		//add_filter( 'style_loader_src',		[ $this, 'remove_queries' ], 10, 2 );
+		//add_filter( 'script_loader_src',	[ $this, 'remove_queries' ], 10, 2 );	 
 	}
 
     /**
@@ -80,8 +80,8 @@ class Scripts {
 	 * Deregister CSS
 	 */
 	public function deregister_styles() {
-		wp_deregister_style( 'wecodeart-core' ); 
-		wp_dequeue_style( 'wecodeart-core' );
+		wp_deregister_style( 'wecodeart-core-scripts' ); 
+		wp_dequeue_style( 'wecodeart-core-scripts' );
 		//wp_deregister_style( 'wp-block-library' );
 		//wp_dequeue_style( 'wp-block-library' ); 
 	}

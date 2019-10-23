@@ -1,6 +1,6 @@
 {
-	"name": "am2-theme",
-	"version": "0.0.1",
+	"name": "wecodeart-developer",
+	"version": "1.3.0",
 	"main": "webpack.config.js",
 	"author": "Bican Marian Valeriu",
 	"scripts": {
@@ -9,8 +9,8 @@
 		"start": "wp-scripts start",
 		"check-engines": "wp-scripts check-engines",
 		"check-licenses": "wp-scripts check-licenses",
-		"lint:css": "wp-scripts lint-style ./wp-content/themes/am2/resources/scss",
-		"lint:js": "wp-scripts lint-js ./wp-content/themes/am2/resources/js/am2-bundle.js ./wp-content/themes/am2/resources/js/routes",
+		"lint:css": "wp-scripts lint-style ./wp-content/themes/wecodeart-developer/src/scss",
+		"lint:js": "wp-scripts lint-js ./wp-content/themes/wecodeart-developer/src/js",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"test:e2e": "wp-scripts test-e2e",
 		"test:unit": "wp-scripts test-unit-js"
@@ -22,21 +22,18 @@
 		"@babel/plugin-proposal-class-properties": "^7.5.5",
 		"@wordpress/browserslist-config": "^2.6.0",
 		"@wordpress/scripts": "^5.1.0",
+		"babel-eslint": "^10.0.3",
+		"bootstrap": "^4.3.1",
 		"browser-sync": "^2.26.7",
 		"browser-sync-webpack-plugin": "^2.2.2",
 		"css-loader": "^3.2.0",
-		"dploy": "^1.2.0",
-		"git-last-commit": "^1.0.0",
-		"glob": "^7.1.4",
+		"eslint": "^6.5.1",
 		"ignore-emit-webpack-plugin": "^2.0.2",
-		"loadjs": "^4.0.1",
 		"lodash": "^4.17.15",
 		"mini-css-extract-plugin": "^0.8.0",
 		"node-sass": "^4.12.0",
 		"postcss-loader": "^3.0.0",
 		"postcss-preset-env": "^6.7.0",
-		"sass-loader": "^7.3.1",
-		"slack-notify": "^0.1.7",
-		"svg-sprite": "^1.5.0"
+		"sass-loader": "^8.0.0"
 	}
 }

@@ -8,22 +8,16 @@ const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extract
 const defaultConfig = require('./node_modules/@wordpress/scripts/config/webpack.config.js');
 
 const devMode = process.env.NODE_ENV !== 'production';
-const publicPath = () => {
-	if (devMode) {
-		return `/dev-folder/wp-content/themes/${__dirname.split('\\').pop()}/assets/`;
-	}
-	return `/wp-content/themes/${__dirname.split('\\').pop()}/assets/`;
-};
 
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'js/frontend': path.resolve(__dirname, `wp-content/themes/${__dirname.split('\\').pop()}/resources/js`, 'frontend.js'),
-		'css/frontend': path.resolve(__dirname, `wp-content/themes/${__dirname.split('\\').pop()}/resources/scss`, 'style.scss'),
+		'js/frontend': path.resolve(process.cwd(), 'src', 'js', 'frontend.js'),
+		'css/frontend': path.resolve(process.cwd(), 'src', 'scss', 'style.scss'),
 	},
 	output: {
-		path: path.resolve(__dirname, `wp-content/themes/${__dirname.split('\\').pop()}/assets`),
-		publicPath: publicPath(),
+		path: path.resolve(process.cwd(), 'assets'),
+		publicPath: `${devMode ? '/wca-docs' : ''}/wp-content/themes/${__dirname.split('\\').pop()}/assets/`,
 		filename: '[name].js',
 		chunkFilename: '[name].js'
 	},
@@ -117,7 +111,7 @@ module.exports = {
 		}) : false,
 		devMode ? new BrowserSyncPlugin({
 			host: 'localhost',
-			proxy: `http://localhost/project-dir`,
+			proxy: `http://localhost/wca-docs`,
 			port: 3000,
 		}, {
 			injectCss: true

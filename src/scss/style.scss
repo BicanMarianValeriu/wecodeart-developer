@@ -36,7 +36,7 @@ Text Domain:  wecodeart-skin
 @import "../../node_modules/bootstrap/scss/root";
 @import "../../node_modules/bootstrap/scss/tables";
 @import "../../node_modules/bootstrap/scss/custom-forms";
-/* //@import "../../node_modules/bootstrap/scss/utilities"; */
+/* @import "../../node_modules/bootstrap/scss/utilities"; */
 @import "../../node_modules/bootstrap/scss/utilities/align";
 @import "../../node_modules/bootstrap/scss/utilities/display";
 @import "../../node_modules/bootstrap/scss/utilities/clearfix";
@@ -51,36 +51,32 @@ Text Domain:  wecodeart-skin
 @import "../../node_modules/bootstrap/scss/utilities/sizing"; 
 @import "../../node_modules/bootstrap/scss/tooltip";
 @import "../../node_modules/bootstrap/scss/transitions"; 
-/* //@import "../../node_modules/bootstrap/scss/utilities/borders";
-//@import "../../node_modules/bootstrap/scss/utilities/embed";
-//@import "../../node_modules/bootstrap/scss/utilities/overflow";
-//@import "../../node_modules/bootstrap/scss/utilities/position"; */
+/* @import "../../node_modules/bootstrap/scss/utilities/borders"; */
+/* @import "../../node_modules/bootstrap/scss/utilities/embed"; */
+/* @import "../../node_modules/bootstrap/scss/utilities/overflow"; */
+/* @import "../../node_modules/bootstrap/scss/utilities/position";  */
 
-/* //@import "../../node_modules/bootstrap/scss/badge";
-//@import "../../node_modules/bootstrap/scss/popover";
-//@import "../../node_modules/bootstrap/scss/navbar";
-//@import "../../node_modules/bootstrap/scss/print";
-//@import "../../node_modules/bootstrap/scss/images";
-//@import "../../node_modules/bootstrap/scss/breadcrumb";
-//@import "../../node_modules/bootstrap/scss/carousel";
-//@import "../../node_modules/bootstrap/scss/close";
-//@import "../../node_modules/bootstrap/scss/jumbotron";
-//@import "../../node_modules/bootstrap/scss/list-group";
-//@import "../../node_modules/bootstrap/scss/media";
-//@import "../../node_modules/bootstrap/scss/modal";
-//@import "../../node_modules/bootstrap/scss/progress";
-//@import "../../node_modules/bootstrap/scss/spinners";
-//@import "../../node_modules/bootstrap/scss/toasts"; */
+/* @import "../../node_modules/bootstrap/scss/badge"; */
+/* @import "../../node_modules/bootstrap/scss/popover"; */
+/* @import "../../node_modules/bootstrap/scss/navbar"; */
+/* @import "../../node_modules/bootstrap/scss/print"; */
+/* @import "../../node_modules/bootstrap/scss/images"; */
+/* @import "../../node_modules/bootstrap/scss/breadcrumb"; */
+/* @import "../../node_modules/bootstrap/scss/carousel"; */
+/* @import "../../node_modules/bootstrap/scss/close"; */
+/* @import "../../node_modules/bootstrap/scss/jumbotron"; */
+/* @import "../../node_modules/bootstrap/scss/list-group"; */
+/* @import "../../node_modules/bootstrap/scss/media"; */
+/* @import "../../node_modules/bootstrap/scss/modal"; */
+/* @import "../../node_modules/bootstrap/scss/progress"; */
+/* @import "../../node_modules/bootstrap/scss/spinners"; */
+/* @import "../../node_modules/bootstrap/scss/toasts"; */
 
 /* Base WP + WeCodeart */
 @import 'base/base';
 
 /* Helpers Classes */
 @import 'helpers/helpers';
-
-/* Vendor */
-//* /@import 'vendor/animate';
-//@import 'vendor/slickslider';  */
 
 /* Custom Components */
 @import 'components/header'; 
