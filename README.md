@@ -1,10 +1,10 @@
 # wecodeart-developer
 Sample WeCodeArt Framework Child Skin
 Features
-- Gulp 4
 - WebPack
 - SASS
+- ES6
 
 Tasks
-- "gulp serve" for running local server and watching code
-- "gulp build" for building minified code and hash (cache busting) css/js bundles
+- "npm start" for running local server and watching code
+- "npm run build" for building minified code and hash (cache busting) css/js bundles
