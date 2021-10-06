@@ -1,120 +1,51 @@
 const path = require('path');
-const postcssPresetEnv = require('postcss-preset-env');
-const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const defaultConfig = require('./node_modules/@wordpress/scripts/config/webpack.config.js');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
+const wplib = [
+    'hooks',
+];
+
+// Livereload plugin
+const getLiveReloadPort = (inputPort) => {
+	const parsedPort = parseInt(inputPort, 10);
+
+	return Number.isInteger(parsedPort) ? parsedPort : 35729;
+};
+
 module.exports = {
-	...defaultConfig,
-	entry: {
-		'js/frontend': path.resolve(process.cwd(), 'src', 'js', 'frontend.js'),
-		'css/frontend': path.resolve(process.cwd(), 'src', 'scss', 'style.scss'),
-	},
-	output: {
-		path: path.resolve(process.cwd(), 'assets'),
-		publicPath: `${devMode ? '/wca-docs' : ''}/wp-content/themes/${__dirname.split('\\').pop()}/assets/`,
-		filename: '[name].js',
-		chunkFilename: '[name].js'
-	},
-	optimization: {
-		...defaultConfig.optimization,
-		namedChunks: true,
-		splitChunks: {
-			cacheGroups: {
-				frontend: {
-					name: 'css/frontend',
-					test: /style\.(sc|sa|c)ss$/,
-					chunks: 'all',
-					enforce: true,
-				},
-				default: false,
-			},
-		},
-	},
-	module: {
-		...defaultConfig.module,
-		rules: [
-			...defaultConfig.module.rules,
-			{
-				test: /\.(sc|sa|c)ss$/,
-				exclude: /node_modules/,
-				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							hmr: devMode,
-							reloadAll: true,
-						}
-					},
-					{
-						loader: 'css-loader',
-						options: {
-							sourceMap: devMode,
-							url: false,
-						},
-					},
-					{
-						loader: 'sass-loader',
-						options: {
-							sourceMap: devMode,
-						},
-					},
-					{
-						loader: 'postcss-loader',
-						options: {
-							ident: 'postcss',
-							plugins: () => [
-								postcssPresetEnv({
-									autoprefixer: {
-										remove: false,
-										flexbox: true,
-										grid: true
-									},
-									stage: 3,
-									features: {
-										'custom-media-queries': {
-											preserve: false,
-										},
-										'custom-properties': {
-											preserve: true,
-										},
-										'nesting-rules': true,
-									},
-								}),
-							],
-						},
-					},
-				],
-			},
-		],
-	},
-	externals: {
-		jquery: 'jQuery'
-	},
-	plugins: [
-		/* ...defaultConfig.plugins, */ // We Use custom similar setup but with BSync
-		process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
-		new MiniCssExtractPlugin(),
-		new IgnoreEmitPlugin([
-			'css/frontend.js',
-			'css/frontend.asset.php',
-			'css/frontend.deps.json',
-		]),
-		/* This should not run on dev for hotreloading since is generating some PHP files for deps */
-		!devMode ? new DependencyExtractionWebpackPlugin({
-			injectPolyfill: true
-		}) : false,
-		devMode ? new BrowserSyncPlugin({
-			host: 'localhost',
-			proxy: `http://localhost/wca-docs`,
-			port: 3000,
-		}, {
-			injectCss: true
-		}) : false
-	].filter(Boolean),
+    ...defaultConfig,
+    entry: {
+        'frontend': path.resolve(process.cwd(), 'src', 'js', 'frontend.js'),
+    },
+    output: {
+        path: path.resolve(process.cwd(), `assets/${devMode ? 'unminified' : 'minified'}`),
+        filename: devMode ? 'js/[name].js' : 'js/[name].min.js',
+    },
+    externals: wplib.reduce((externals, lib) => {
+        externals[`wp.${lib}`] = {
+            window: ['wp', lib],
+        };
+
+        return externals;
+    }, {
+        'wp': 'wp',
+        'lodash': '_',
+        'jquery': 'jQuery',
+        'react': 'React',
+        'react-dom': 'ReactDOM',
+    }),
+    plugins: [
+        new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ['**/*', '!fonts/**', '!images/**'] }),
+        process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
+        new MiniCssExtractPlugin({ filename: devMode ? 'css/[name].css' : 'css/[name].min.css' }),
+        devMode && new LiveReloadPlugin({ port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT) }),
+        !process.env.WP_NO_EXTERNALS && new DependencyExtractionWebpackPlugin({ injectPolyfill: true }),
+    ].filter(Boolean),
 };
