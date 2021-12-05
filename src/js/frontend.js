@@ -7,8 +7,8 @@ wecodeart = {
 	...{
 		routes: {
 			...wecodeart.routes,
-			hasTitleHidden: {
-				init: () => console.log('This page has hidden title.'),
+			themeIsSkin: {
+				init: () => console.log('Welcome from your skin JS.'),
 			}
 		}
 	}
