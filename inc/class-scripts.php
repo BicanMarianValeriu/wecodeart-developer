@@ -4,15 +4,15 @@
  *
  * @package		WeCodeArt Dev 
  * @subpackage	Scripts
- * @copyright	Copyright (c) 2019, WeCodeArt Dev
+ * @copyright	Copyright (c) 2022, WeCodeArt Dev
  * @link		https://www.wecodeart.com/
- * @since		2.1.0
+ * @since		2.1.1
  */
 
 namespace WeCodeArt\Dev;
 
 use WeCodeArt\Singleton;
-use WeCodeArt\Core\Scripts\Base;
+use WeCodeArt\Config\Traits\Asset;
 
 /**
  * Scripts
@@ -20,7 +20,7 @@ use WeCodeArt\Core\Scripts\Base;
 class Scripts {
 
 	use Singleton;
-	use Base;
+	use Asset;
 
 	/**
 	 * Send Construtor

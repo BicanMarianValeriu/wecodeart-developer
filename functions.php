@@ -4,7 +4,7 @@
  *
  * @package     WeCodeArt Dev 
  * @subpackage 	Functions
- * @copyright   Copyright (c) 2021, WeCodeArt Dev
+ * @copyright   Copyright (c) 2022, WeCodeArt Dev
  * @link        https://www.wecodeart.com/
  * @since       1.0.0 
  * 
@@ -13,7 +13,7 @@
 // Child theme (do not remove)
 define( 'CHILD_THEME_NAME', 	'WeCodeArt Dev Starter' );
 define( 'CHILD_THEME_URL', 		'https://www.wecodeart.com/' );
-define( 'CHILD_THEME_VERSION', 	'2.1.0' ); 
+define( 'CHILD_THEME_VERSION', 	'2.1.1' ); 
 define( 'CHILD_THEME_NS',       'WeCodeArt\Dev' );
 define( 'CHILD_THEME_INC', 	    __DIR__ . '/inc' );
 
