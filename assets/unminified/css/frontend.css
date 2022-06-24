@@ -1,13 +1,16 @@
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/scss/index.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************/
 /*!
-Theme Name: WeCodeArt Dev Skin
+Theme Name: WeCodeArt Developer
 Theme URI: https://www.wecodeart.com/
 Author: Bican Marian Valeriu @wecodeart
-Author URI: https://www.wecodeart.com/about/
-Description: A simple WordPress Theme Framework focused on SEO, Speed and code simplicity. Is realy fast, fully customizable & beautiful theme suitable for blog, personal portfolio, business website and WooCommerce storefront. Now is Gutenberg ready.
-Version: 2.1.0
+Author URI: https://www.iambican.com/
+Description: WeCodeArt Framework developer starter kit.
+Version: 2.1.2
 Requires PHP: 7.0
-Requires at least: 5.8
-Tested up to: 5.9
+Requires at least: 6.0
+Tested up to: 6.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wecodeart-developer
@@ -243,7 +246,6 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
 }
 .btn {
   display: inline-block;
-  align-self: center;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
@@ -1956,7 +1958,7 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
   box-shadow: inset 0 -1px 0 rgba(28, 31, 33, 0.125);
 }
 .accordion-button:not(.collapsed)::after {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23207ad5'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23207ad5%27%3e%3cpath fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3e%3c/svg%3e");
   transform: rotate(-180deg);
 }
 .accordion-button::after {
@@ -1965,7 +1967,7 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
   height: 1.25rem;
   margin-left: auto;
   content: "";
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23212529%27%3e%3cpath fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-size: 1.25rem;
   transition: transform 0.2s ease-in-out;
@@ -2259,15 +2261,12 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
     max-width: 500px;
     margin: 1.75rem auto;
   }
-
   .modal-dialog-scrollable {
     height: calc(100% - 3.5rem);
   }
-
   .modal-dialog-centered {
     min-height: calc(100% - 3.5rem);
   }
-
   .modal-sm {
     max-width: 300px;
   }
@@ -2551,11 +2550,11 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
   } ]
 } */
 .carousel-control-prev-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23fff%27%3e%3cpath d=%27M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z%27/%3e%3c/svg%3e");
 }
 
 .carousel-control-next-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23fff%27%3e%3cpath d=%27M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z%27/%3e%3c/svg%3e");
 }
 
 .carousel-indicators {
@@ -2619,6 +2618,18 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
 }
 .carousel-dark .carousel-caption {
   color: #1c1f21;
+}
+
+/* 	= Header Area
+--------------------------------------------------------------- */
+.site-header {
+  color: inherit;
+}
+
+/* 	= Footer Area
+--------------------------------------------------------------- */
+.site-footer {
+  color: inherit;
 }
 
 /*# sourceMappingURL=frontend.css.map*/

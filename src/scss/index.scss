@@ -1,14 +1,14 @@
 @charset "UTF-8";
 /*!
-Theme Name: WeCodeArt Dev Skin
+Theme Name: WeCodeArt Developer
 Theme URI: https://www.wecodeart.com/
 Author: Bican Marian Valeriu @wecodeart
-Author URI: https://www.wecodeart.com/about/
-Description: A simple WordPress Theme Framework focused on SEO, Speed and code simplicity. Is realy fast, fully customizable & beautiful theme suitable for blog, personal portfolio, business website and WooCommerce storefront. Now is Gutenberg ready.
-Version: 2.1.1
+Author URI: https://www.iambican.com/
+Description: WeCodeArt Framework developer starter kit.
+Version: 2.1.2
 Requires PHP: 7.0
-Requires at least: 5.9.3
-Tested up to: 6.0
+Requires at least: 6.0
+Tested up to: 6.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wecodeart-developer
@@ -60,3 +60,7 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
 @import "~bootstrap/scss/toasts";
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/carousel";
+
+// Custom
+@import "components/header";
+@import "components/footer";
