@@ -4,9 +4,9 @@
  *
  * @package		WeCodeArt Dev 
  * @subpackage	Scripts
- * @copyright	Copyright (c) 2022, WeCodeArt Dev
+ * @copyright	Copyright (c) 2023, WeCodeArt Dev
  * @link		https://www.wecodeart.com/
- * @since		2.1.2
+ * @since		2.1.3
  */
 
 namespace WeCodeArt\Dev;
@@ -26,21 +26,14 @@ class Scripts {
 	 * Send Construtor
 	 */
 	public function init() {
-		add_filter( 'wecodeart/filter/head/clean', '__return_true' );
-		add_action( 'wp_enqueue_scripts',	[ $this, 'enqueue_assets' ] );
-	}
-
-    /**
-	 * Skin Assets
-	 */
-	public function enqueue_assets() {
-		// Enqueue Styles
-		wp_enqueue_style( $this->make_handle(), self::get_file( 'css', 'frontend' ), [], wecodeart( 'version' ) );
-
-		// Enqueue Scripts
-		wp_enqueue_script( $this->make_handle(), self::get_file( 'js', 'frontend' ), [
-	 		'wp-hooks'
-		], wecodeart( 'version' ), true );
+		wecodeart( 'assets' )->add_script( $this->make_handle(), [
+			'path' => self::get_file( 'js', 'frontend' ),
+			'deps' => [ 'wecodeart-support-assets' ]
+		] );
+		
+		wecodeart( 'assets' )->add_style( $this->make_handle(), [
+			'path' => self::get_file( 'css', 'frontend' )
+		] );
 	}
 
  	/**

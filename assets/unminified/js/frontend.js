@@ -198,11 +198,14 @@ ansiHTML.reset()
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_index_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../scss/index.scss */ "./src/scss/index.scss");
 // Styles
- // Attach Specific Route JS
 
-wecodeart = { ...wecodeart,
+
+// Attach Specific Route JS
+wecodeart = {
+  ...wecodeart,
   ...{
-    routes: { ...wecodeart.routes,
+    routes: {
+      ...wecodeart.routes,
       // See the body class theme-is-skin (camelCase in javascript)
       themeIsSkin: {
         init: () => console.log('Welcome from your skin JS!')
@@ -965,7 +968,6 @@ Object.defineProperty(exports, "__esModule", ({value:true}));exports.fromCodePoi
 
 
 /* eslint-env browser */
-
 /*
   eslint-disable
   no-console,
@@ -973,122 +975,103 @@ Object.defineProperty(exports, "__esModule", ({value:true}));exports.fromCodePoi
 */
 
 /** @typedef {any} TODO */
-var normalizeUrl = __webpack_require__(/*! ./normalize-url */ "./node_modules/mini-css-extract-plugin/dist/hmr/normalize-url.js");
 
+var normalizeUrl = __webpack_require__(/*! ./normalize-url */ "./node_modules/mini-css-extract-plugin/dist/hmr/normalize-url.js");
 var srcByModuleId = Object.create(null);
 var noDocument = typeof document === "undefined";
 var forEach = Array.prototype.forEach;
+
 /**
  * @param {function} fn
  * @param {number} time
  * @returns {(function(): void)|*}
  */
-
 function debounce(fn, time) {
   var timeout = 0;
   return function () {
     // @ts-ignore
-    var self = this; // eslint-disable-next-line prefer-rest-params
-
+    var self = this;
+    // eslint-disable-next-line prefer-rest-params
     var args = arguments;
-
     var functionCall = function functionCall() {
       return fn.apply(self, args);
     };
+    clearTimeout(timeout);
 
-    clearTimeout(timeout); // @ts-ignore
-
+    // @ts-ignore
     timeout = setTimeout(functionCall, time);
   };
 }
-
 function noop() {}
+
 /**
  * @param {TODO} moduleId
  * @returns {TODO}
  */
-
-
 function getCurrentScriptUrl(moduleId) {
   var src = srcByModuleId[moduleId];
-
   if (!src) {
     if (document.currentScript) {
-      src =
-      /** @type {HTMLScriptElement} */
-      document.currentScript.src;
+      src = /** @type {HTMLScriptElement} */document.currentScript.src;
     } else {
       var scripts = document.getElementsByTagName("script");
       var lastScriptTag = scripts[scripts.length - 1];
-
       if (lastScriptTag) {
         src = lastScriptTag.src;
       }
     }
-
     srcByModuleId[moduleId] = src;
   }
+
   /**
    * @param {string} fileMap
    * @returns {null | string[]}
    */
-
-
   return function (fileMap) {
     if (!src) {
       return null;
     }
-
     var splitResult = src.split(/([^\\/]+)\.js$/);
     var filename = splitResult && splitResult[1];
-
     if (!filename) {
       return [src.replace(".js", ".css")];
     }
-
     if (!fileMap) {
       return [src.replace(".js", ".css")];
     }
-
     return fileMap.split(",").map(function (mapRule) {
       var reg = new RegExp("".concat(filename, "\\.js$"), "g");
       return normalizeUrl(src.replace(reg, "".concat(mapRule.replace(/{fileName}/g, filename), ".css")));
     });
   };
 }
+
 /**
  * @param {TODO} el
  * @param {string} [url]
  */
-
-
 function updateCss(el, url) {
   if (!url) {
     if (!el.href) {
       return;
-    } // eslint-disable-next-line
+    }
 
-
+    // eslint-disable-next-line
     url = el.href.split("?")[0];
   }
-
-  if (!isUrlRequest(
-  /** @type {string} */
-  url)) {
+  if (!isUrlRequest( /** @type {string} */url)) {
     return;
   }
-
   if (el.isLoaded === false) {
     // We seem to be about to replace a css link that hasn't loaded yet.
     // We're probably changing the same file more than once.
     return;
   }
-
   if (!url || !(url.indexOf(".css") > -1)) {
     return;
-  } // eslint-disable-next-line no-param-reassign
+  }
 
-
+  // eslint-disable-next-line no-param-reassign
   el.visited = true;
   var newEl = el.cloneNode();
   newEl.isLoaded = false;
@@ -1096,7 +1079,6 @@ function updateCss(el, url) {
     if (newEl.isLoaded) {
       return;
     }
-
     newEl.isLoaded = true;
     el.parentNode.removeChild(el);
   });
@@ -1104,28 +1086,26 @@ function updateCss(el, url) {
     if (newEl.isLoaded) {
       return;
     }
-
     newEl.isLoaded = true;
     el.parentNode.removeChild(el);
   });
   newEl.href = "".concat(url, "?").concat(Date.now());
-
   if (el.nextSibling) {
     el.parentNode.insertBefore(newEl, el.nextSibling);
   } else {
     el.parentNode.appendChild(newEl);
   }
 }
+
 /**
  * @param {string} href
  * @param {TODO} src
  * @returns {TODO}
  */
-
-
 function getReloadUrl(href, src) {
-  var ret; // eslint-disable-next-line no-param-reassign
+  var ret;
 
+  // eslint-disable-next-line no-param-reassign
   href = normalizeUrl(href);
   src.some(
   /**
@@ -1139,34 +1119,28 @@ function getReloadUrl(href, src) {
   });
   return ret;
 }
+
 /**
  * @param {string} [src]
  * @returns {boolean}
  */
-
-
 function reloadStyle(src) {
   if (!src) {
     return false;
   }
-
   var elements = document.querySelectorAll("link");
   var loaded = false;
   forEach.call(elements, function (el) {
     if (!el.href) {
       return;
     }
-
     var url = getReloadUrl(el.href, src);
-
     if (!isUrlRequest(url)) {
       return;
     }
-
     if (el.visited === true) {
       return;
     }
-
     if (url) {
       updateCss(el, url);
       loaded = true;
@@ -1174,57 +1148,49 @@ function reloadStyle(src) {
   });
   return loaded;
 }
-
 function reloadAll() {
   var elements = document.querySelectorAll("link");
   forEach.call(elements, function (el) {
     if (el.visited === true) {
       return;
     }
-
     updateCss(el);
   });
 }
+
 /**
  * @param {string} url
  * @returns {boolean}
  */
-
-
 function isUrlRequest(url) {
   // An URL is not an request if
+
   // It is not http or https
   if (!/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(url)) {
     return false;
   }
-
   return true;
 }
+
 /**
  * @param {TODO} moduleId
  * @param {TODO} options
  * @returns {TODO}
  */
-
-
 module.exports = function (moduleId, options) {
   if (noDocument) {
     console.log("no window.document found, will not HMR CSS");
     return noop;
   }
-
   var getScriptSrc = getCurrentScriptUrl(moduleId);
-
   function update() {
     var src = getScriptSrc(options.filename);
     var reloaded = reloadStyle(src);
-
     if (options.locals) {
       console.log("[HMR] Detected local css modules. Reload all css");
       reloadAll();
       return;
     }
-
     if (reloaded) {
       console.log("[HMR] css reload %s", src.join(" "));
     } else {
@@ -1232,7 +1198,6 @@ module.exports = function (moduleId, options) {
       reloadAll();
     }
   }
-
   return debounce(update, 50);
 };
 
@@ -1259,32 +1224,24 @@ function normalizeUrl(pathComponents) {
       case "..":
         accumulator.pop();
         break;
-
       case ".":
         break;
-
       default:
         accumulator.push(item);
     }
-
     return accumulator;
-  },
-  /** @type {string[]} */
-  []).join("/");
+  }, /** @type {string[]} */[]).join("/");
 }
+
 /**
  * @param {string} urlString
  * @returns {string}
  */
-
-
 module.exports = function (urlString) {
   urlString = urlString.trim();
-
   if (/^data:/i.test(urlString)) {
     return urlString;
   }
-
   var protocol = urlString.indexOf("//") !== -1 ? urlString.split("//")[0] + "//" : "";
   var components = urlString.replace(new RegExp(protocol, "i"), "").split("/");
   var host = components[0].toLowerCase().replace(/\.$/, "");
@@ -1306,7 +1263,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1656037587858
+      // 1685173509931
       var cssReload = __webpack_require__(/*! ../../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -1328,12 +1285,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _utils_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 var WebSocketClient = /*#__PURE__*/function () {
   /**
@@ -1341,37 +1296,34 @@ var WebSocketClient = /*#__PURE__*/function () {
    */
   function WebSocketClient(url) {
     _classCallCheck(this, WebSocketClient);
-
     this.client = new WebSocket(url);
-
     this.client.onerror = function (error) {
       _utils_log_js__WEBPACK_IMPORTED_MODULE_0__.log.error(error);
     };
   }
+
   /**
    * @param {(...args: any[]) => void} f
    */
-
-
   _createClass(WebSocketClient, [{
     key: "onOpen",
     value: function onOpen(f) {
       this.client.onopen = f;
     }
+
     /**
      * @param {(...args: any[]) => void} f
      */
-
   }, {
     key: "onClose",
     value: function onClose(f) {
       this.client.onclose = f;
-    } // call f with the message string as the first argument
+    }
 
+    // call f with the message string as the first argument
     /**
      * @param {(...args: any[]) => void} f
      */
-
   }, {
     key: "onMessage",
     value: function onMessage(f) {
@@ -1380,22 +1332,20 @@ var WebSocketClient = /*#__PURE__*/function () {
       };
     }
   }]);
-
   return WebSocketClient;
 }();
 
 
-
 /***/ }),
 
-/***/ "./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&reconnect=10":
-/*!**********************************************************************************************************************************************!*\
-  !*** ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&reconnect=10 ***!
-  \**********************************************************************************************************************************************/
+/***/ "./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true ***!
+  \*************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-var __resourceQuery = "?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&reconnect=10";
+var __resourceQuery = "?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webpack/hot/log.js */ "./node_modules/webpack/hot/log.js");
 /* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -1407,6 +1357,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/sendMessage.js */ "./node_modules/webpack-dev-server/client/utils/sendMessage.js");
 /* harmony import */ var _utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/reloadApp.js */ "./node_modules/webpack-dev-server/client/utils/reloadApp.js");
 /* harmony import */ var _utils_createSocketURL_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/createSocketURL.js */ "./node_modules/webpack-dev-server/client/utils/createSocketURL.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /* global __resourceQuery, __webpack_hash__ */
 /// <reference types="webpack/module" />
 
@@ -1418,12 +1373,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/**
+ * @typedef {Object} OverlayOptions
+ * @property {boolean | (error: Error) => boolean} [warnings]
+ * @property {boolean | (error: Error) => boolean} [errors]
+ * @property {boolean | (error: Error) => boolean} [runtimeErrors]
+ * @property {string} [trustedTypesPolicyName]
+ */
+
 /**
  * @typedef {Object} Options
  * @property {boolean} hot
  * @property {boolean} liveReload
  * @property {boolean} progress
- * @property {boolean | { warnings?: boolean, errors?: boolean, trustedTypesPolicyName?: string }} overlay
+ * @property {boolean | OverlayOptions} overlay
  * @property {string} [logging]
  * @property {number} [reconnect]
  */
@@ -1436,17 +1400,33 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /**
+ * @param {boolean | { warnings?: boolean | string; errors?: boolean | string; runtimeErrors?: boolean | string; }} overlayOptions
+ */
+var decodeOverlayOptions = function decodeOverlayOptions(overlayOptions) {
+  if (typeof overlayOptions === "object") {
+    ["warnings", "errors", "runtimeErrors"].forEach(function (property) {
+      if (typeof overlayOptions[property] === "string") {
+        var overlayFilterFunctionString = decodeURIComponent(overlayOptions[property]);
+
+        // eslint-disable-next-line no-new-func
+        var overlayFilterFunction = new Function("message", "var callback = ".concat(overlayFilterFunctionString, "\n        return callback(message)"));
+        overlayOptions[property] = overlayFilterFunction;
+      }
+    });
+  }
+};
+
+/**
  * @type {Status}
  */
-
 var status = {
   isUnloading: false,
   // TODO Workaround for webpack v4, `__webpack_hash__` is not replaced without HotModuleReplacement
   // eslint-disable-next-line camelcase
   currentHash:  true ? __webpack_require__.h() : 0
 };
-/** @type {Options} */
 
+/** @type {Options} */
 var options = {
   hot: false,
   liveReload: false,
@@ -1454,69 +1434,97 @@ var options = {
   overlay: false
 };
 var parsedResourceQuery = (0,_utils_parseURL_js__WEBPACK_IMPORTED_MODULE_2__["default"])(__resourceQuery);
-
+var enabledFeatures = {
+  "Hot Module Replacement": false,
+  "Live Reloading": false,
+  Progress: false,
+  Overlay: false
+};
 if (parsedResourceQuery.hot === "true") {
   options.hot = true;
-  _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Hot Module Replacement enabled.");
+  enabledFeatures["Hot Module Replacement"] = true;
 }
-
 if (parsedResourceQuery["live-reload"] === "true") {
   options.liveReload = true;
-  _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Live Reloading enabled.");
+  enabledFeatures["Live Reloading"] = true;
 }
+if (parsedResourceQuery.progress === "true") {
+  options.progress = true;
+  enabledFeatures.Progress = true;
+}
+if (parsedResourceQuery.overlay) {
+  try {
+    options.overlay = JSON.parse(parsedResourceQuery.overlay);
+  } catch (e) {
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error("Error parsing overlay options from resource query:", e);
+  }
 
+  // Fill in default "true" params for partially-specified objects.
+  if (typeof options.overlay === "object") {
+    options.overlay = _objectSpread({
+      errors: true,
+      warnings: true,
+      runtimeErrors: true
+    }, options.overlay);
+    decodeOverlayOptions(options.overlay);
+  }
+  enabledFeatures.Overlay = true;
+}
 if (parsedResourceQuery.logging) {
   options.logging = parsedResourceQuery.logging;
 }
-
 if (typeof parsedResourceQuery.reconnect !== "undefined") {
   options.reconnect = Number(parsedResourceQuery.reconnect);
 }
+
 /**
  * @param {string} level
  */
-
-
 function setAllLogLevel(level) {
   // This is needed because the HMR logger operate separately from dev server logger
   webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0___default().setLogLevel(level === "verbose" || level === "log" ? "info" : level);
   (0,_utils_log_js__WEBPACK_IMPORTED_MODULE_5__.setLogLevel)(level);
 }
-
 if (options.logging) {
   setAllLogLevel(options.logging);
 }
-
+(0,_utils_log_js__WEBPACK_IMPORTED_MODULE_5__.logEnabledFeatures)(enabledFeatures);
 self.addEventListener("beforeunload", function () {
   status.isUnloading = true;
 });
+var overlay = typeof window !== "undefined" ? (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.createOverlay)(typeof options.overlay === "object" ? {
+  trustedTypesPolicyName: options.overlay.trustedTypesPolicyName,
+  catchRuntimeError: options.overlay.runtimeErrors
+} : {
+  trustedTypesPolicyName: false,
+  catchRuntimeError: options.overlay
+}) : {
+  send: function send() {}
+};
 var onSocketMessage = {
   hot: function hot() {
     if (parsedResourceQuery.hot === "false") {
       return;
     }
-
     options.hot = true;
-    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Hot Module Replacement enabled.");
   },
   liveReload: function liveReload() {
     if (parsedResourceQuery["live-reload"] === "false") {
       return;
     }
-
     options.liveReload = true;
-    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Live Reloading enabled.");
   },
   invalid: function invalid() {
-    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("App updated. Recompiling..."); // Fixes #1042. overlay doesn't clear if errors are fixed but warnings remain.
+    _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("App updated. Recompiling...");
 
+    // Fixes #1042. overlay doesn't clear if errors are fixed but warnings remain.
     if (options.overlay) {
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.hide)();
+      overlay.send({
+        type: "DISMISS"
+      });
     }
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Invalid");
   },
-
   /**
    * @param {string} hash
    */
@@ -1525,7 +1533,6 @@ var onSocketMessage = {
     status.currentHash = _hash;
   },
   logging: setAllLogLevel,
-
   /**
    * @param {boolean} value
    */
@@ -1533,10 +1540,9 @@ var onSocketMessage = {
     if (typeof document === "undefined") {
       return;
     }
-
     options.overlay = value;
+    decodeOverlayOptions(options.overlay);
   },
-
   /**
    * @param {number} value
    */
@@ -1544,17 +1550,14 @@ var onSocketMessage = {
     if (parsedResourceQuery.reconnect === "false") {
       return;
     }
-
     options.reconnect = value;
   },
-
   /**
    * @param {boolean} value
    */
   progress: function progress(value) {
     options.progress = value;
   },
-
   /**
    * @param {{ pluginName?: string, percent: number, msg: string }} data
    */
@@ -1562,29 +1565,27 @@ var onSocketMessage = {
     if (options.progress) {
       _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("".concat(data.pluginName ? "[".concat(data.pluginName, "] ") : "").concat(data.percent, "% - ").concat(data.msg, "."));
     }
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Progress", data);
   },
   "still-ok": function stillOk() {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Nothing changed.");
-
     if (options.overlay) {
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.hide)();
+      overlay.send({
+        type: "DISMISS"
+      });
     }
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("StillOk");
   },
   ok: function ok() {
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Ok");
-
     if (options.overlay) {
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.hide)();
+      overlay.send({
+        type: "DISMISS"
+      });
     }
-
     (0,_utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__["default"])(options, status);
   },
   // TODO: remove in v5 in favor of 'static-changed'
-
   /**
    * @param {string} file
    */
@@ -1592,7 +1593,6 @@ var onSocketMessage = {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("".concat(file ? "\"".concat(file, "\"") : "Content", " from static directory was changed. Reloading..."));
     self.location.reload();
   },
-
   /**
    * @param {string} file
    */
@@ -1600,70 +1600,65 @@ var onSocketMessage = {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("".concat(file ? "\"".concat(file, "\"") : "Content", " from static directory was changed. Reloading..."));
     self.location.reload();
   },
-
   /**
    * @param {Error[]} warnings
    * @param {any} params
    */
   warnings: function warnings(_warnings, params) {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.warn("Warnings while compiling.");
-
     var printableWarnings = _warnings.map(function (error) {
       var _formatProblem = (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.formatProblem)("warning", error),
-          header = _formatProblem.header,
-          body = _formatProblem.body;
-
+        header = _formatProblem.header,
+        body = _formatProblem.body;
       return "".concat(header, "\n").concat((0,_utils_stripAnsi_js__WEBPACK_IMPORTED_MODULE_1__["default"])(body));
     });
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Warnings", printableWarnings);
-
     for (var i = 0; i < printableWarnings.length; i++) {
       _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.warn(printableWarnings[i]);
     }
-
-    var needShowOverlayForWarnings = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.warnings;
-
-    if (needShowOverlayForWarnings) {
-      var trustedTypesPolicyName = typeof options.overlay === "object" && options.overlay.trustedTypesPolicyName;
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.show)("warning", _warnings, trustedTypesPolicyName || null);
+    var overlayWarningsSetting = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.warnings;
+    if (overlayWarningsSetting) {
+      var warningsToDisplay = typeof overlayWarningsSetting === "function" ? _warnings.filter(overlayWarningsSetting) : _warnings;
+      if (warningsToDisplay.length) {
+        overlay.send({
+          type: "BUILD_ERROR",
+          level: "warning",
+          messages: _warnings
+        });
+      }
     }
-
     if (params && params.preventReloading) {
       return;
     }
-
     (0,_utils_reloadApp_js__WEBPACK_IMPORTED_MODULE_7__["default"])(options, status);
   },
-
   /**
    * @param {Error[]} errors
    */
   errors: function errors(_errors) {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error("Errors while compiling. Reload prevented.");
-
     var printableErrors = _errors.map(function (error) {
       var _formatProblem2 = (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.formatProblem)("error", error),
-          header = _formatProblem2.header,
-          body = _formatProblem2.body;
-
+        header = _formatProblem2.header,
+        body = _formatProblem2.body;
       return "".concat(header, "\n").concat((0,_utils_stripAnsi_js__WEBPACK_IMPORTED_MODULE_1__["default"])(body));
     });
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Errors", printableErrors);
-
     for (var i = 0; i < printableErrors.length; i++) {
       _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.error(printableErrors[i]);
     }
-
-    var needShowOverlayForErrors = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.errors;
-
-    if (needShowOverlayForErrors) {
-      var trustedTypesPolicyName = typeof options.overlay === "object" && options.overlay.trustedTypesPolicyName;
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.show)("error", _errors, trustedTypesPolicyName || null);
+    var overlayErrorsSettings = typeof options.overlay === "boolean" ? options.overlay : options.overlay && options.overlay.errors;
+    if (overlayErrorsSettings) {
+      var errorsToDisplay = typeof overlayErrorsSettings === "function" ? _errors.filter(overlayErrorsSettings) : _errors;
+      if (errorsToDisplay.length) {
+        overlay.send({
+          type: "BUILD_ERROR",
+          level: "error",
+          messages: _errors
+        });
+      }
     }
   },
-
   /**
    * @param {Error} error
    */
@@ -1672,11 +1667,11 @@ var onSocketMessage = {
   },
   close: function close() {
     _utils_log_js__WEBPACK_IMPORTED_MODULE_5__.log.info("Disconnected!");
-
     if (options.overlay) {
-      (0,_overlay_js__WEBPACK_IMPORTED_MODULE_4__.hide)();
+      overlay.send({
+        type: "DISMISS"
+      });
     }
-
     (0,_utils_sendMessage_js__WEBPACK_IMPORTED_MODULE_6__["default"])("Close");
   }
 };
@@ -1702,10 +1697,10 @@ var socketURL = (0,_utils_createSocketURL_js__WEBPACK_IMPORTED_MODULE_8__["defau
 /***/ (function(module) {
 
 
+
 /**
  * Client stub for tapable SyncBailHook
  */
-
 module.exports = function clientTapableSyncBailHook() {
   return {
     call: function call() {}
@@ -1726,14 +1721,13 @@ module.exports = function clientTapableSyncBailHook() {
 */
 
 
+
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
-
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return _arrayLikeToArray(o, minLen);
@@ -1742,41 +1736,31 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
-
 function _iterableToArray(iter) {
   if (typeof (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }) !== "undefined" && iter[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
-
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
@@ -1785,72 +1769,62 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
   return Constructor;
 }
-
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return typeof key === "symbol" ? key : String(key);
+}
+function _toPrimitive(input, hint) {
+  if (typeof input !== "object" || input === null) return input;
+  var prim = input[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (typeof res !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
 var LogType = Object.freeze({
-  error:
-  /** @type {"error"} */
-  "error",
+  error: /** @type {"error"} */"error",
   // message, c style arguments
-  warn:
-  /** @type {"warn"} */
-  "warn",
+  warn: /** @type {"warn"} */"warn",
   // message, c style arguments
-  info:
-  /** @type {"info"} */
-  "info",
+  info: /** @type {"info"} */"info",
   // message, c style arguments
-  log:
-  /** @type {"log"} */
-  "log",
+  log: /** @type {"log"} */"log",
   // message, c style arguments
-  debug:
-  /** @type {"debug"} */
-  "debug",
+  debug: /** @type {"debug"} */"debug",
   // message, c style arguments
-  trace:
-  /** @type {"trace"} */
-  "trace",
-  // no arguments
-  group:
-  /** @type {"group"} */
-  "group",
-  // [label]
-  groupCollapsed:
-  /** @type {"groupCollapsed"} */
-  "groupCollapsed",
-  // [label]
-  groupEnd:
-  /** @type {"groupEnd"} */
-  "groupEnd",
-  // [label]
-  profile:
-  /** @type {"profile"} */
-  "profile",
-  // [profileName]
-  profileEnd:
-  /** @type {"profileEnd"} */
-  "profileEnd",
-  // [profileName]
-  time:
-  /** @type {"time"} */
-  "time",
-  // name, time as [seconds, nanoseconds]
-  clear:
-  /** @type {"clear"} */
-  "clear",
-  // no arguments
-  status:
-  /** @type {"status"} */
-  "status" // message, arguments
 
+  trace: /** @type {"trace"} */"trace",
+  // no arguments
+
+  group: /** @type {"group"} */"group",
+  // [label]
+  groupCollapsed: /** @type {"groupCollapsed"} */"groupCollapsed",
+  // [label]
+  groupEnd: /** @type {"groupEnd"} */"groupEnd",
+  // [label]
+
+  profile: /** @type {"profile"} */"profile",
+  // [profileName]
+  profileEnd: /** @type {"profileEnd"} */"profileEnd",
+  // [profileName]
+
+  time: /** @type {"time"} */"time",
+  // name, time as [seconds, nanoseconds]
+
+  clear: /** @type {"clear"} */"clear",
+  // no arguments
+  status: /** @type {"status"} */"status" // message, arguments
 });
+
 exports.LogType = LogType;
+
 /** @typedef {typeof LogType[keyof typeof LogType]} LogTypeEnum */
 
 var LOG_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger raw log method");
 var TIMERS_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger times");
 var TIMERS_AGGREGATES_SYMBOL = (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; })("webpack logger aggregated times");
-
 var WebpackLogger = /*#__PURE__*/function () {
   /**
    * @param {function(LogTypeEnum, any[]=): void} log log function
@@ -1858,18 +1832,15 @@ var WebpackLogger = /*#__PURE__*/function () {
    */
   function WebpackLogger(log, getChildLogger) {
     _classCallCheck(this, WebpackLogger);
-
     this[LOG_SYMBOL] = log;
     this.getChildLogger = getChildLogger;
   }
-
   _createClass(WebpackLogger, [{
     key: "error",
     value: function error() {
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
-
       this[LOG_SYMBOL](LogType.error, args);
     }
   }, {
@@ -1878,7 +1849,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
-
       this[LOG_SYMBOL](LogType.warn, args);
     }
   }, {
@@ -1887,7 +1857,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
       }
-
       this[LOG_SYMBOL](LogType.info, args);
     }
   }, {
@@ -1896,7 +1865,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
         args[_key4] = arguments[_key4];
       }
-
       this[LOG_SYMBOL](LogType.log, args);
     }
   }, {
@@ -1905,7 +1873,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
         args[_key5] = arguments[_key5];
       }
-
       this[LOG_SYMBOL](LogType.debug, args);
     }
   }, {
@@ -1915,7 +1882,6 @@ var WebpackLogger = /*#__PURE__*/function () {
         for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
           args[_key6 - 1] = arguments[_key6];
         }
-
         this[LOG_SYMBOL](LogType.error, args);
       }
     }
@@ -1935,7 +1901,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
         args[_key7] = arguments[_key7];
       }
-
       this[LOG_SYMBOL](LogType.status, args);
     }
   }, {
@@ -1944,7 +1909,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len8 = arguments.length, args = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
         args[_key8] = arguments[_key8];
       }
-
       this[LOG_SYMBOL](LogType.group, args);
     }
   }, {
@@ -1953,7 +1917,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len9 = arguments.length, args = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
         args[_key9] = arguments[_key9];
       }
-
       this[LOG_SYMBOL](LogType.groupCollapsed, args);
     }
   }, {
@@ -1962,7 +1925,6 @@ var WebpackLogger = /*#__PURE__*/function () {
       for (var _len10 = arguments.length, args = new Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
         args[_key10] = arguments[_key10];
       }
-
       this[LOG_SYMBOL](LogType.groupEnd, args);
     }
   }, {
@@ -1985,11 +1947,9 @@ var WebpackLogger = /*#__PURE__*/function () {
     key: "timeLog",
     value: function timeLog(label) {
       var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
-
       if (!prev) {
         throw new Error("No such label '".concat(label, "' for WebpackLogger.timeLog()"));
       }
-
       var time = process.hrtime(prev);
       this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
     }
@@ -1997,11 +1957,9 @@ var WebpackLogger = /*#__PURE__*/function () {
     key: "timeEnd",
     value: function timeEnd(label) {
       var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
-
       if (!prev) {
         throw new Error("No such label '".concat(label, "' for WebpackLogger.timeEnd()"));
       }
-
       var time = process.hrtime(prev);
       this[TIMERS_SYMBOL].delete(label);
       this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
@@ -2010,16 +1968,13 @@ var WebpackLogger = /*#__PURE__*/function () {
     key: "timeAggregate",
     value: function timeAggregate(label) {
       var prev = this[TIMERS_SYMBOL] && this[TIMERS_SYMBOL].get(label);
-
       if (!prev) {
         throw new Error("No such label '".concat(label, "' for WebpackLogger.timeAggregate()"));
       }
-
       var time = process.hrtime(prev);
       this[TIMERS_SYMBOL].delete(label);
       this[TIMERS_AGGREGATES_SYMBOL] = this[TIMERS_AGGREGATES_SYMBOL] || new Map();
       var current = this[TIMERS_AGGREGATES_SYMBOL].get(label);
-
       if (current !== undefined) {
         if (time[1] + current[1] > 1e9) {
           time[0] += current[0] + 1;
@@ -2029,7 +1984,6 @@ var WebpackLogger = /*#__PURE__*/function () {
           time[1] += current[1];
         }
       }
-
       this[TIMERS_AGGREGATES_SYMBOL].set(label, time);
     }
   }, {
@@ -2042,10 +1996,8 @@ var WebpackLogger = /*#__PURE__*/function () {
       this[LOG_SYMBOL](LogType.time, [label].concat(_toConsumableArray(time)));
     }
   }]);
-
   return WebpackLogger;
 }();
-
 exports.Logger = WebpackLogger;
 
 /***/ }),
@@ -2054,7 +2006,7 @@ exports.Logger = WebpackLogger;
 /*!*****************************************************************!*\
   !*** ./node_modules/webpack/lib/logging/createConsoleLogger.js ***!
   \*****************************************************************/
-/***/ (function(module, __unused_webpack_exports, __nested_webpack_require_10785__) {
+/***/ (function(module, __unused_webpack_exports, __nested_webpack_require_11285__) {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -2062,14 +2014,13 @@ exports.Logger = WebpackLogger;
 */
 
 
+
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
-
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
   if (typeof o === "string") return _arrayLikeToArray(o, minLen);
@@ -2078,31 +2029,22 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
-
 function _iterableToArray(iter) {
   if (typeof (typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }) !== "undefined" && iter[(typeof Symbol !== "undefined" ? Symbol : function (i) { return i; }).iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
-
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
-
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
+var _require = __nested_webpack_require_11285__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
+  LogType = _require.LogType;
 
-var _require = __nested_webpack_require_10785__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
-    LogType = _require.LogType;
 /** @typedef {import("../../declarations/WebpackOptions").FilterItemTypes} FilterItemTypes */
-
 /** @typedef {import("../../declarations/WebpackOptions").FilterTypes} FilterTypes */
-
 /** @typedef {import("./Logger").LogTypeEnum} LogTypeEnum */
 
 /** @typedef {function(string): boolean} FilterFunction */
@@ -2136,38 +2078,33 @@ var _require = __nested_webpack_require_10785__(/*! ./Logger */ "./node_modules/
  * @param {FilterItemTypes} item an input item
  * @returns {FilterFunction} filter function
  */
-
-
 var filterToFunction = function filterToFunction(item) {
   if (typeof item === "string") {
-    var regExp = new RegExp("[\\\\/]".concat(item.replace( // eslint-disable-next-line no-useless-escape
+    var regExp = new RegExp("[\\\\/]".concat(item.replace(
+    // eslint-disable-next-line no-useless-escape
     /[-[\]{}()*+?.\\^$|]/g, "\\$&"), "([\\\\/]|$|!|\\?)"));
     return function (ident) {
       return regExp.test(ident);
     };
   }
-
   if (item && typeof item === "object" && typeof item.test === "function") {
     return function (ident) {
       return item.test(ident);
     };
   }
-
   if (typeof item === "function") {
     return item;
   }
-
   if (typeof item === "boolean") {
     return function () {
       return item;
     };
   }
 };
+
 /**
  * @enum {number}
  */
-
-
 var LogLevel = {
   none: 6,
   false: 6,
@@ -2178,32 +2115,29 @@ var LogLevel = {
   true: 2,
   verbose: 1
 };
+
 /**
  * @param {LoggerOptions} options options object
  * @returns {function(string, LogTypeEnum, any[]): void} logging function
  */
-
 module.exports = function (_ref) {
   var _ref$level = _ref.level,
-      level = _ref$level === void 0 ? "info" : _ref$level,
-      _ref$debug = _ref.debug,
-      debug = _ref$debug === void 0 ? false : _ref$debug,
-      console = _ref.console;
+    level = _ref$level === void 0 ? "info" : _ref$level,
+    _ref$debug = _ref.debug,
+    debug = _ref$debug === void 0 ? false : _ref$debug,
+    console = _ref.console;
   var debugFilters = typeof debug === "boolean" ? [function () {
     return debug;
-  }] :
-  /** @type {FilterItemTypes[]} */
-  [].concat(debug).map(filterToFunction);
+  }] : /** @type {FilterItemTypes[]} */[].concat(debug).map(filterToFunction);
   /** @type {number} */
-
   var loglevel = LogLevel["".concat(level)] || 0;
+
   /**
    * @param {string} name name of the logger
    * @param {LogTypeEnum} type type of the log entry
    * @param {any[]} args arguments of the log entry
    * @returns {void}
    */
-
   var logger = function logger(name, type, args) {
     var labeledArgs = function labeledArgs() {
       if (Array.isArray(args)) {
@@ -2216,52 +2150,42 @@ module.exports = function (_ref) {
         return [];
       }
     };
-
     var debug = debugFilters.some(function (f) {
       return f(name);
     });
-
     switch (type) {
       case LogType.debug:
-        if (!debug) return; // eslint-disable-next-line node/no-unsupported-features/node-builtins
-
+        if (!debug) return;
+        // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.debug === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.debug.apply(console, _toConsumableArray(labeledArgs()));
         } else {
           console.log.apply(console, _toConsumableArray(labeledArgs()));
         }
-
         break;
-
       case LogType.log:
         if (!debug && loglevel > LogLevel.log) return;
         console.log.apply(console, _toConsumableArray(labeledArgs()));
         break;
-
       case LogType.info:
         if (!debug && loglevel > LogLevel.info) return;
         console.info.apply(console, _toConsumableArray(labeledArgs()));
         break;
-
       case LogType.warn:
         if (!debug && loglevel > LogLevel.warn) return;
         console.warn.apply(console, _toConsumableArray(labeledArgs()));
         break;
-
       case LogType.error:
         if (!debug && loglevel > LogLevel.error) return;
         console.error.apply(console, _toConsumableArray(labeledArgs()));
         break;
-
       case LogType.trace:
         if (!debug) return;
         console.trace();
         break;
-
       case LogType.groupCollapsed:
         if (!debug && loglevel > LogLevel.log) return;
-
         if (!debug && loglevel > LogLevel.verbose) {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           if (typeof console.groupCollapsed === "function") {
@@ -2270,80 +2194,63 @@ module.exports = function (_ref) {
           } else {
             console.log.apply(console, _toConsumableArray(labeledArgs()));
           }
-
           break;
         }
-
       // falls through
-
       case LogType.group:
-        if (!debug && loglevel > LogLevel.log) return; // eslint-disable-next-line node/no-unsupported-features/node-builtins
-
+        if (!debug && loglevel > LogLevel.log) return;
+        // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.group === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.group.apply(console, _toConsumableArray(labeledArgs()));
         } else {
           console.log.apply(console, _toConsumableArray(labeledArgs()));
         }
-
         break;
-
       case LogType.groupEnd:
-        if (!debug && loglevel > LogLevel.log) return; // eslint-disable-next-line node/no-unsupported-features/node-builtins
-
+        if (!debug && loglevel > LogLevel.log) return;
+        // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.groupEnd === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.groupEnd();
         }
-
         break;
-
       case LogType.time:
         {
           if (!debug && loglevel > LogLevel.log) return;
           var ms = args[1] * 1000 + args[2] / 1000000;
           var msg = "[".concat(name, "] ").concat(args[0], ": ").concat(ms, " ms");
-
           if (typeof console.logTime === "function") {
             console.logTime(msg);
           } else {
             console.log(msg);
           }
-
           break;
         }
-
       case LogType.profile:
         // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.profile === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.profile.apply(console, _toConsumableArray(labeledArgs()));
         }
-
         break;
-
       case LogType.profileEnd:
         // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.profileEnd === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.profileEnd.apply(console, _toConsumableArray(labeledArgs()));
         }
-
         break;
-
       case LogType.clear:
-        if (!debug && loglevel > LogLevel.log) return; // eslint-disable-next-line node/no-unsupported-features/node-builtins
-
+        if (!debug && loglevel > LogLevel.log) return;
+        // eslint-disable-next-line node/no-unsupported-features/node-builtins
         if (typeof console.clear === "function") {
           // eslint-disable-next-line node/no-unsupported-features/node-builtins
           console.clear();
         }
-
         break;
-
       case LogType.status:
         if (!debug && loglevel > LogLevel.info) return;
-
         if (typeof console.status === "function") {
           if (args.length === 0) {
             console.status();
@@ -2355,14 +2262,11 @@ module.exports = function (_ref) {
             console.info.apply(console, _toConsumableArray(labeledArgs()));
           }
         }
-
         break;
-
       default:
         throw new Error("Unexpected LogType ".concat(type));
     }
   };
-
   return logger;
 };
 
@@ -2372,7 +2276,7 @@ module.exports = function (_ref) {
 /*!*****************************************************!*\
   !*** ./node_modules/webpack/lib/logging/runtime.js ***!
   \*****************************************************/
-/***/ (function(__unused_webpack_module, exports, __nested_webpack_require_20872__) {
+/***/ (function(__unused_webpack_module, exports, __nested_webpack_require_21334__) {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -2380,43 +2284,38 @@ module.exports = function (_ref) {
 */
 
 
+
 function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
-
       for (var key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
         }
       }
     }
-
     return target;
   };
   return _extends.apply(this, arguments);
 }
+var SyncBailHook = __nested_webpack_require_21334__(/*! tapable/lib/SyncBailHook */ "./client-src/modules/logger/SyncBailHookFake.js");
+var _require = __nested_webpack_require_21334__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
+  Logger = _require.Logger;
+var createConsoleLogger = __nested_webpack_require_21334__(/*! ./createConsoleLogger */ "./node_modules/webpack/lib/logging/createConsoleLogger.js");
 
-var SyncBailHook = __nested_webpack_require_20872__(/*! tapable/lib/SyncBailHook */ "./client-src/modules/logger/SyncBailHookFake.js");
-
-var _require = __nested_webpack_require_20872__(/*! ./Logger */ "./node_modules/webpack/lib/logging/Logger.js"),
-    Logger = _require.Logger;
-
-var createConsoleLogger = __nested_webpack_require_20872__(/*! ./createConsoleLogger */ "./node_modules/webpack/lib/logging/createConsoleLogger.js");
 /** @type {createConsoleLogger.LoggerOptions} */
-
-
 var currentDefaultLoggerOptions = {
   level: "info",
   debug: false,
   console: console
 };
 var currentDefaultLogger = createConsoleLogger(currentDefaultLoggerOptions);
+
 /**
  * @param {string} name name of the logger
  * @returns {Logger} a logger
  */
-
 exports.getLogger = function (name) {
   return new Logger(function (type, args) {
     if (exports.hooks.log.call(name, type, args) === undefined) {
@@ -2426,18 +2325,15 @@ exports.getLogger = function (name) {
     return exports.getLogger("".concat(name, "/").concat(childName));
   });
 };
+
 /**
  * @param {createConsoleLogger.LoggerOptions} options new options, merge with old options
  * @returns {void}
  */
-
-
 exports.configureDefaultLogger = function (options) {
   _extends(currentDefaultLoggerOptions, options);
-
   currentDefaultLogger = createConsoleLogger(currentDefaultLoggerOptions);
 };
-
 exports.hooks = {
   log: new SyncBailHook(["origin", "type", "args"])
 };
@@ -2450,7 +2346,7 @@ exports.hooks = {
 /******/ 	var __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
-/******/ 	function __nested_webpack_require_23009__(moduleId) {
+/******/ 	function __nested_webpack_require_23461__(moduleId) {
 /******/ 		// Check if module is in cache
 /******/ 		var cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
@@ -2464,7 +2360,7 @@ exports.hooks = {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __nested_webpack_require_23009__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __nested_webpack_require_23461__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -2474,9 +2370,9 @@ exports.hooks = {
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__nested_webpack_require_23009__.d = function(exports, definition) {
+/******/ 		__nested_webpack_require_23461__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
-/******/ 				if(__nested_webpack_require_23009__.o(definition, key) && !__nested_webpack_require_23009__.o(exports, key)) {
+/******/ 				if(__nested_webpack_require_23461__.o(definition, key) && !__nested_webpack_require_23461__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
@@ -2485,13 +2381,13 @@ exports.hooks = {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	!function() {
-/******/ 		__nested_webpack_require_23009__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 		__nested_webpack_require_23461__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__nested_webpack_require_23009__.r = function(exports) {
+/******/ 		__nested_webpack_require_23461__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
@@ -2500,22 +2396,22 @@ exports.hooks = {
 /******/ 	}();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+var __nested_webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
 /*!********************************************!*\
   !*** ./client-src/modules/logger/index.js ***!
   \********************************************/
-__nested_webpack_require_23009__.r(__webpack_exports__);
-/* harmony export */ __nested_webpack_require_23009__.d(__webpack_exports__, {
+__nested_webpack_require_23461__.r(__nested_webpack_exports__);
+/* harmony export */ __nested_webpack_require_23461__.d(__nested_webpack_exports__, {
 /* harmony export */   "default": function() { return /* reexport default export from named module */ webpack_lib_logging_runtime_js__WEBPACK_IMPORTED_MODULE_0__; }
 /* harmony export */ });
-/* harmony import */ var webpack_lib_logging_runtime_js__WEBPACK_IMPORTED_MODULE_0__ = __nested_webpack_require_23009__(/*! webpack/lib/logging/runtime.js */ "./node_modules/webpack/lib/logging/runtime.js");
+/* harmony import */ var webpack_lib_logging_runtime_js__WEBPACK_IMPORTED_MODULE_0__ = __nested_webpack_require_23461__(/*! webpack/lib/logging/runtime.js */ "./node_modules/webpack/lib/logging/runtime.js");
 
 }();
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
-if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
+for(var i in __nested_webpack_exports__) __webpack_export_target__[i] = __nested_webpack_exports__[i];
+if(__nested_webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
 
@@ -2530,16 +2426,27 @@ if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "formatProblem": () => (/* binding */ formatProblem),
-/* harmony export */   "hide": () => (/* binding */ hide),
-/* harmony export */   "show": () => (/* binding */ show)
+/* harmony export */   createOverlay: () => (/* binding */ createOverlay),
+/* harmony export */   formatProblem: () => (/* binding */ formatProblem)
 /* harmony export */ });
 /* harmony import */ var ansi_html_community__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ansi-html-community */ "./node_modules/ansi-html-community/index.js");
 /* harmony import */ var ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(ansi_html_community__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! html-entities */ "./node_modules/html-entities/lib/index.js");
-/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(html_entities__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! html-entities */ "./node_modules/html-entities/lib/index.js");
+/* harmony import */ var html_entities__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(html_entities__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./overlay/runtime-error.js */ "./node_modules/webpack-dev-server/client/overlay/runtime-error.js");
+/* harmony import */ var _overlay_state_machine_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./overlay/state-machine.js */ "./node_modules/webpack-dev-server/client/overlay/state-machine.js");
+/* harmony import */ var _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./overlay/styles.js */ "./node_modules/webpack-dev-server/client/overlay/styles.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 // The error overlay is inspired (and mostly copied) from Create React App (https://github.com/facebookincubator/create-react-app)
 // They, in turn, got inspired by webpack-hot-middleware (https://github.com/glenjamin/webpack-hot-middleware).
+
+
+
+
 
 
 var colors = {
@@ -2554,203 +2461,598 @@ var colors = {
   lightgrey: "EBE7E3",
   darkgrey: "6D7891"
 };
-/** @type {HTMLIFrameElement | null | undefined} */
-
-var iframeContainerElement;
-/** @type {HTMLDivElement | null | undefined} */
-
-var containerElement;
-/** @type {Array<(element: HTMLDivElement) => void>} */
-
-var onLoadQueue = [];
-/** @type {TrustedTypePolicy | undefined} */
-
-var overlayTrustedTypesPolicy;
 ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default().setColors(colors);
-/**
- * @param {string | null} trustedTypesPolicyName
- */
 
-function createContainer(trustedTypesPolicyName) {
-  // Enable Trusted Types if they are available in the current browser.
-  if (window.trustedTypes) {
-    overlayTrustedTypesPolicy = window.trustedTypes.createPolicy(trustedTypesPolicyName || "webpack-dev-server#overlay", {
-      createHTML: function createHTML(value) {
-        return value;
-      }
-    });
-  }
-
-  iframeContainerElement = document.createElement("iframe");
-  iframeContainerElement.id = "webpack-dev-server-client-overlay";
-  iframeContainerElement.src = "about:blank";
-  iframeContainerElement.style.position = "fixed";
-  iframeContainerElement.style.left = 0;
-  iframeContainerElement.style.top = 0;
-  iframeContainerElement.style.right = 0;
-  iframeContainerElement.style.bottom = 0;
-  iframeContainerElement.style.width = "100vw";
-  iframeContainerElement.style.height = "100vh";
-  iframeContainerElement.style.border = "none";
-  iframeContainerElement.style.zIndex = 9999999999;
-
-  iframeContainerElement.onload = function () {
-    containerElement =
-    /** @type {Document} */
-
-    /** @type {HTMLIFrameElement} */
-    iframeContainerElement.contentDocument.createElement("div");
-    containerElement.id = "webpack-dev-server-client-overlay-div";
-    containerElement.style.position = "fixed";
-    containerElement.style.boxSizing = "border-box";
-    containerElement.style.left = 0;
-    containerElement.style.top = 0;
-    containerElement.style.right = 0;
-    containerElement.style.bottom = 0;
-    containerElement.style.width = "100vw";
-    containerElement.style.height = "100vh";
-    containerElement.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
-    containerElement.style.color = "#E8E8E8";
-    containerElement.style.fontFamily = "Menlo, Consolas, monospace";
-    containerElement.style.fontSize = "large";
-    containerElement.style.padding = "2rem";
-    containerElement.style.lineHeight = "1.2";
-    containerElement.style.whiteSpace = "pre-wrap";
-    containerElement.style.overflow = "auto";
-    var headerElement = document.createElement("span");
-    headerElement.innerText = "Compiled with problems:";
-    var closeButtonElement = document.createElement("button");
-    closeButtonElement.innerText = "X";
-    closeButtonElement.style.background = "transparent";
-    closeButtonElement.style.border = "none";
-    closeButtonElement.style.fontSize = "20px";
-    closeButtonElement.style.fontWeight = "bold";
-    closeButtonElement.style.color = "white";
-    closeButtonElement.style.cursor = "pointer";
-    closeButtonElement.style.cssFloat = "right"; // @ts-ignore
-
-    closeButtonElement.style.styleFloat = "right";
-    closeButtonElement.addEventListener("click", function () {
-      hide();
-    });
-    containerElement.appendChild(headerElement);
-    containerElement.appendChild(closeButtonElement);
-    containerElement.appendChild(document.createElement("br"));
-    containerElement.appendChild(document.createElement("br"));
-    /** @type {Document} */
-
-    /** @type {HTMLIFrameElement} */
-    iframeContainerElement.contentDocument.body.appendChild(containerElement);
-    onLoadQueue.forEach(function (onLoad) {
-      onLoad(
-      /** @type {HTMLDivElement} */
-      containerElement);
-    });
-    onLoadQueue = [];
-    /** @type {HTMLIFrameElement} */
-
-    iframeContainerElement.onload = null;
-  };
-
-  document.body.appendChild(iframeContainerElement);
-}
-/**
- * @param {(element: HTMLDivElement) => void} callback
- * @param {string | null} trustedTypesPolicyName
- */
-
-
-function ensureOverlayExists(callback, trustedTypesPolicyName) {
-  if (containerElement) {
-    // Everything is ready, call the callback right away.
-    callback(containerElement);
-    return;
-  }
-
-  onLoadQueue.push(callback);
-
-  if (iframeContainerElement) {
-    return;
-  }
-
-  createContainer(trustedTypesPolicyName);
-} // Successful compilation.
-
-
-function hide() {
-  if (!iframeContainerElement) {
-    return;
-  } // Clean up and reset internal state.
-
-
-  document.body.removeChild(iframeContainerElement);
-  iframeContainerElement = null;
-  containerElement = null;
-}
 /**
  * @param {string} type
- * @param {string  | { file?: string, moduleName?: string, loc?: string, message?: string }} item
+ * @param {string  | { file?: string, moduleName?: string, loc?: string, message?: string; stack?: string[] }} item
  * @returns {{ header: string, body: string }}
  */
-
-
 function formatProblem(type, item) {
   var header = type === "warning" ? "WARNING" : "ERROR";
   var body = "";
-
   if (typeof item === "string") {
     body += item;
   } else {
-    var file = item.file || ""; // eslint-disable-next-line no-nested-ternary
-
+    var file = item.file || "";
+    // eslint-disable-next-line no-nested-ternary
     var moduleName = item.moduleName ? item.moduleName.indexOf("!") !== -1 ? "".concat(item.moduleName.replace(/^(\s|\S)*!/, ""), " (").concat(item.moduleName, ")") : "".concat(item.moduleName) : "";
     var loc = item.loc;
     header += "".concat(moduleName || file ? " in ".concat(moduleName ? "".concat(moduleName).concat(file ? " (".concat(file, ")") : "") : file).concat(loc ? " ".concat(loc) : "") : "");
     body += item.message || "";
   }
-
+  if (Array.isArray(item.stack)) {
+    item.stack.forEach(function (stack) {
+      if (typeof stack === "string") {
+        body += "\r\n".concat(stack);
+      }
+    });
+  }
   return {
     header: header,
     body: body
   };
-} // Compilation with errors (e.g. syntax error or missing modules).
-
-/**
- * @param {string} type
- * @param {Array<string  | { file?: string, moduleName?: string, loc?: string, message?: string }>} messages
- * @param {string | null} trustedTypesPolicyName
- */
-
-
-function show(type, messages, trustedTypesPolicyName) {
-  ensureOverlayExists(function () {
-    messages.forEach(function (message) {
-      var entryElement = document.createElement("div");
-      var typeElement = document.createElement("span");
-
-      var _formatProblem = formatProblem(type, message),
-          header = _formatProblem.header,
-          body = _formatProblem.body;
-
-      typeElement.innerText = header;
-      typeElement.style.color = "#".concat(colors.red); // Make it look similar to our terminal.
-
-      var text = ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default()((0,html_entities__WEBPACK_IMPORTED_MODULE_1__.encode)(body));
-      var messageTextNode = document.createElement("div");
-      messageTextNode.innerHTML = overlayTrustedTypesPolicy ? overlayTrustedTypesPolicy.createHTML(text) : text;
-      entryElement.appendChild(typeElement);
-      entryElement.appendChild(document.createElement("br"));
-      entryElement.appendChild(document.createElement("br"));
-      entryElement.appendChild(messageTextNode);
-      entryElement.appendChild(document.createElement("br"));
-      entryElement.appendChild(document.createElement("br"));
-      /** @type {HTMLDivElement} */
-
-      containerElement.appendChild(entryElement);
-    });
-  }, trustedTypesPolicyName);
 }
 
+/**
+ * @typedef {Object} CreateOverlayOptions
+ * @property {string | null} trustedTypesPolicyName
+ * @property {boolean | (error: Error) => void} [catchRuntimeError]
+ */
+
+/**
+ *
+ * @param {CreateOverlayOptions} options
+ */
+var createOverlay = function createOverlay(options) {
+  /** @type {HTMLIFrameElement | null | undefined} */
+  var iframeContainerElement;
+  /** @type {HTMLDivElement | null | undefined} */
+  var containerElement;
+  /** @type {HTMLDivElement | null | undefined} */
+  var headerElement;
+  /** @type {Array<(element: HTMLDivElement) => void>} */
+  var onLoadQueue = [];
+  /** @type {TrustedTypePolicy | undefined} */
+  var overlayTrustedTypesPolicy;
+
+  /**
+   *
+   * @param {HTMLElement} element
+   * @param {CSSStyleDeclaration} style
+   */
+  function applyStyle(element, style) {
+    Object.keys(style).forEach(function (prop) {
+      element.style[prop] = style[prop];
+    });
+  }
+
+  /**
+   * @param {string | null} trustedTypesPolicyName
+   */
+  function createContainer(trustedTypesPolicyName) {
+    // Enable Trusted Types if they are available in the current browser.
+    if (window.trustedTypes) {
+      overlayTrustedTypesPolicy = window.trustedTypes.createPolicy(trustedTypesPolicyName || "webpack-dev-server#overlay", {
+        createHTML: function createHTML(value) {
+          return value;
+        }
+      });
+    }
+    iframeContainerElement = document.createElement("iframe");
+    iframeContainerElement.id = "webpack-dev-server-client-overlay";
+    iframeContainerElement.src = "about:blank";
+    applyStyle(iframeContainerElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.iframeStyle);
+    iframeContainerElement.onload = function () {
+      var contentElement = /** @type {Document} */
+      /** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument.createElement("div");
+      containerElement = /** @type {Document} */
+      /** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument.createElement("div");
+      contentElement.id = "webpack-dev-server-client-overlay-div";
+      applyStyle(contentElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.containerStyle);
+      headerElement = document.createElement("div");
+      headerElement.innerText = "Compiled with problems:";
+      applyStyle(headerElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.headerStyle);
+      var closeButtonElement = document.createElement("button");
+      applyStyle(closeButtonElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.dismissButtonStyle);
+      closeButtonElement.innerText = "×";
+      closeButtonElement.ariaLabel = "Dismiss";
+      closeButtonElement.addEventListener("click", function () {
+        // eslint-disable-next-line no-use-before-define
+        overlayService.send({
+          type: "DISMISS"
+        });
+      });
+      contentElement.appendChild(headerElement);
+      contentElement.appendChild(closeButtonElement);
+      contentElement.appendChild(containerElement);
+
+      /** @type {Document} */
+      /** @type {HTMLIFrameElement} */
+      iframeContainerElement.contentDocument.body.appendChild(contentElement);
+      onLoadQueue.forEach(function (onLoad) {
+        onLoad( /** @type {HTMLDivElement} */contentElement);
+      });
+      onLoadQueue = [];
+
+      /** @type {HTMLIFrameElement} */
+      iframeContainerElement.onload = null;
+    };
+    document.body.appendChild(iframeContainerElement);
+  }
+
+  /**
+   * @param {(element: HTMLDivElement) => void} callback
+   * @param {string | null} trustedTypesPolicyName
+   */
+  function ensureOverlayExists(callback, trustedTypesPolicyName) {
+    if (containerElement) {
+      containerElement.innerHTML = "";
+      // Everything is ready, call the callback right away.
+      callback(containerElement);
+      return;
+    }
+    onLoadQueue.push(callback);
+    if (iframeContainerElement) {
+      return;
+    }
+    createContainer(trustedTypesPolicyName);
+  }
+
+  // Successful compilation.
+  function hide() {
+    if (!iframeContainerElement) {
+      return;
+    }
+
+    // Clean up and reset internal state.
+    document.body.removeChild(iframeContainerElement);
+    iframeContainerElement = null;
+    containerElement = null;
+  }
+
+  // Compilation with errors (e.g. syntax error or missing modules).
+  /**
+   * @param {string} type
+   * @param {Array<string  | { moduleIdentifier?: string, moduleName?: string, loc?: string, message?: string }>} messages
+   * @param {string | null} trustedTypesPolicyName
+   * @param {'build' | 'runtime'} messageSource
+   */
+  function show(type, messages, trustedTypesPolicyName, messageSource) {
+    ensureOverlayExists(function () {
+      headerElement.innerText = messageSource === "runtime" ? "Uncaught runtime errors:" : "Compiled with problems:";
+      messages.forEach(function (message) {
+        var entryElement = document.createElement("div");
+        var msgStyle = type === "warning" ? _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgStyles.warning : _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgStyles.error;
+        applyStyle(entryElement, _objectSpread(_objectSpread({}, msgStyle), {}, {
+          padding: "1rem 1rem 1.5rem 1rem"
+        }));
+        var typeElement = document.createElement("div");
+        var _formatProblem = formatProblem(type, message),
+          header = _formatProblem.header,
+          body = _formatProblem.body;
+        typeElement.innerText = header;
+        applyStyle(typeElement, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgTypeStyle);
+        if (message.moduleIdentifier) {
+          applyStyle(typeElement, {
+            cursor: "pointer"
+          });
+          // element.dataset not supported in IE
+          typeElement.setAttribute("data-can-open", true);
+          typeElement.addEventListener("click", function () {
+            fetch("/webpack-dev-server/open-editor?fileName=".concat(message.moduleIdentifier));
+          });
+        }
+
+        // Make it look similar to our terminal.
+        var text = ansi_html_community__WEBPACK_IMPORTED_MODULE_0___default()((0,html_entities__WEBPACK_IMPORTED_MODULE_4__.encode)(body));
+        var messageTextNode = document.createElement("div");
+        applyStyle(messageTextNode, _overlay_styles_js__WEBPACK_IMPORTED_MODULE_3__.msgTextStyle);
+        messageTextNode.innerHTML = overlayTrustedTypesPolicy ? overlayTrustedTypesPolicy.createHTML(text) : text;
+        entryElement.appendChild(typeElement);
+        entryElement.appendChild(messageTextNode);
+
+        /** @type {HTMLDivElement} */
+        containerElement.appendChild(entryElement);
+      });
+    }, trustedTypesPolicyName);
+  }
+  var overlayService = (0,_overlay_state_machine_js__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    showOverlay: function showOverlay(_ref) {
+      var _ref$level = _ref.level,
+        level = _ref$level === void 0 ? "error" : _ref$level,
+        messages = _ref.messages,
+        messageSource = _ref.messageSource;
+      return show(level, messages, options.trustedTypesPolicyName, messageSource);
+    },
+    hideOverlay: hide
+  });
+  if (options.catchRuntimeError) {
+    /**
+     * @param {Error | undefined} error
+     * @param {string} fallbackMessage
+     */
+    var handleError = function handleError(error, fallbackMessage) {
+      var errorObject = error instanceof Error ? error : new Error(error || fallbackMessage);
+      var shouldDisplay = typeof options.catchRuntimeError === "function" ? options.catchRuntimeError(errorObject) : true;
+      if (shouldDisplay) {
+        overlayService.send({
+          type: "RUNTIME_ERROR",
+          messages: [{
+            message: errorObject.message,
+            stack: (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.parseErrorToStacks)(errorObject)
+          }]
+        });
+      }
+    };
+    (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.listenToRuntimeError)(function (errorEvent) {
+      // error property may be empty in older browser like IE
+      var error = errorEvent.error,
+        message = errorEvent.message;
+      if (!error && !message) {
+        return;
+      }
+      handleError(error, message);
+    });
+    (0,_overlay_runtime_error_js__WEBPACK_IMPORTED_MODULE_1__.listenToUnhandledRejection)(function (promiseRejectionEvent) {
+      var reason = promiseRejectionEvent.reason;
+      handleError(reason, "Unknown promise rejection reason");
+    });
+  }
+  return overlayService;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/fsm.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/fsm.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+/**
+ * @typedef {Object} StateDefinitions
+ * @property {{[event: string]: { target: string; actions?: Array<string> }}} [on]
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {{[state: string]: StateDefinitions}} states
+ * @property {object} context;
+ * @property {string} initial
+ */
+
+/**
+ * @typedef {Object} Implementation
+ * @property {{[actionName: string]: (ctx: object, event: any) => object}} actions
+ */
+
+/**
+ * A simplified `createMachine` from `@xstate/fsm` with the following differences:
+ *
+ *  - the returned machine is technically a "service". No `interpret(machine).start()` is needed.
+ *  - the state definition only support `on` and target must be declared with { target: 'nextState', actions: [] } explicitly.
+ *  - event passed to `send` must be an object with `type` property.
+ *  - actions implementation will be [assign action](https://xstate.js.org/docs/guides/context.html#assign-action) if you return any value.
+ *  Do not return anything if you just want to invoke side effect.
+ *
+ * The goal of this custom function is to avoid installing the entire `'xstate/fsm'` package, while enabling modeling using
+ * state machine. You can copy the first parameter into the editor at https://stately.ai/viz to visualize the state machine.
+ *
+ * @param {Options} options
+ * @param {Implementation} implementation
+ */
+function createMachine(_ref, _ref2) {
+  var states = _ref.states,
+    context = _ref.context,
+    initial = _ref.initial;
+  var actions = _ref2.actions;
+  var currentState = initial;
+  var currentContext = context;
+  return {
+    send: function send(event) {
+      var currentStateOn = states[currentState].on;
+      var transitionConfig = currentStateOn && currentStateOn[event.type];
+      if (transitionConfig) {
+        currentState = transitionConfig.target;
+        if (transitionConfig.actions) {
+          transitionConfig.actions.forEach(function (actName) {
+            var actionImpl = actions[actName];
+            var nextContextValue = actionImpl && actionImpl(currentContext, event);
+            if (nextContextValue) {
+              currentContext = _objectSpread(_objectSpread({}, currentContext), nextContextValue);
+            }
+          });
+        }
+      }
+    }
+  };
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createMachine);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/runtime-error.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/runtime-error.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   listenToRuntimeError: () => (/* binding */ listenToRuntimeError),
+/* harmony export */   listenToUnhandledRejection: () => (/* binding */ listenToUnhandledRejection),
+/* harmony export */   parseErrorToStacks: () => (/* binding */ parseErrorToStacks)
+/* harmony export */ });
+/**
+ *
+ * @param {Error} error
+ */
+function parseErrorToStacks(error) {
+  if (!error || !(error instanceof Error)) {
+    throw new Error("parseErrorToStacks expects Error object");
+  }
+  if (typeof error.stack === "string") {
+    return error.stack.split("\n").filter(function (stack) {
+      return stack !== "Error: ".concat(error.message);
+    });
+  }
+}
+
+/**
+ * @callback ErrorCallback
+ * @param {ErrorEvent} error
+ * @returns {void}
+ */
+
+/**
+ * @param {ErrorCallback} callback
+ */
+function listenToRuntimeError(callback) {
+  window.addEventListener("error", callback);
+  return function cleanup() {
+    window.removeEventListener("error", callback);
+  };
+}
+
+/**
+ * @callback UnhandledRejectionCallback
+ * @param {PromiseRejectionEvent} rejectionEvent
+ * @returns {void}
+ */
+
+/**
+ * @param {UnhandledRejectionCallback} callback
+ */
+function listenToUnhandledRejection(callback) {
+  window.addEventListener("unhandledrejection", callback);
+  return function cleanup() {
+    window.removeEventListener("unhandledrejection", callback);
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/state-machine.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/state-machine.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _fsm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fsm.js */ "./node_modules/webpack-dev-server/client/overlay/fsm.js");
+
+
+/**
+ * @typedef {Object} ShowOverlayData
+ * @property {'warning' | 'error'} level
+ * @property {Array<string  | { moduleIdentifier?: string, moduleName?: string, loc?: string, message?: string }>} messages
+ * @property {'build' | 'runtime'} messageSource
+ */
+
+/**
+ * @typedef {Object} CreateOverlayMachineOptions
+ * @property {(data: ShowOverlayData) => void} showOverlay
+ * @property {() => void} hideOverlay
+ */
+
+/**
+ * @param {CreateOverlayMachineOptions} options
+ */
+var createOverlayMachine = function createOverlayMachine(options) {
+  var hideOverlay = options.hideOverlay,
+    showOverlay = options.showOverlay;
+  var overlayMachine = (0,_fsm_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    initial: "hidden",
+    context: {
+      level: "error",
+      messages: [],
+      messageSource: "build"
+    },
+    states: {
+      hidden: {
+        on: {
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["setMessages", "showOverlay"]
+          },
+          RUNTIME_ERROR: {
+            target: "displayRuntimeError",
+            actions: ["setMessages", "showOverlay"]
+          }
+        }
+      },
+      displayBuildError: {
+        on: {
+          DISMISS: {
+            target: "hidden",
+            actions: ["dismissMessages", "hideOverlay"]
+          },
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["appendMessages", "showOverlay"]
+          }
+        }
+      },
+      displayRuntimeError: {
+        on: {
+          DISMISS: {
+            target: "hidden",
+            actions: ["dismissMessages", "hideOverlay"]
+          },
+          RUNTIME_ERROR: {
+            target: "displayRuntimeError",
+            actions: ["appendMessages", "showOverlay"]
+          },
+          BUILD_ERROR: {
+            target: "displayBuildError",
+            actions: ["setMessages", "showOverlay"]
+          }
+        }
+      }
+    }
+  }, {
+    actions: {
+      dismissMessages: function dismissMessages() {
+        return {
+          messages: [],
+          level: "error",
+          messageSource: "build"
+        };
+      },
+      appendMessages: function appendMessages(context, event) {
+        return {
+          messages: context.messages.concat(event.messages),
+          level: event.level || context.level,
+          messageSource: event.type === "RUNTIME_ERROR" ? "runtime" : "build"
+        };
+      },
+      setMessages: function setMessages(context, event) {
+        return {
+          messages: event.messages,
+          level: event.level || context.level,
+          messageSource: event.type === "RUNTIME_ERROR" ? "runtime" : "build"
+        };
+      },
+      hideOverlay: hideOverlay,
+      showOverlay: showOverlay
+    }
+  });
+  return overlayMachine;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createOverlayMachine);
+
+/***/ }),
+
+/***/ "./node_modules/webpack-dev-server/client/overlay/styles.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/webpack-dev-server/client/overlay/styles.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   containerStyle: () => (/* binding */ containerStyle),
+/* harmony export */   dismissButtonStyle: () => (/* binding */ dismissButtonStyle),
+/* harmony export */   headerStyle: () => (/* binding */ headerStyle),
+/* harmony export */   iframeStyle: () => (/* binding */ iframeStyle),
+/* harmony export */   msgStyles: () => (/* binding */ msgStyles),
+/* harmony export */   msgTextStyle: () => (/* binding */ msgTextStyle),
+/* harmony export */   msgTypeStyle: () => (/* binding */ msgTypeStyle)
+/* harmony export */ });
+// styles are inspired by `react-error-overlay`
+
+var msgStyles = {
+  error: {
+    backgroundColor: "rgba(206, 17, 38, 0.1)",
+    color: "#fccfcf"
+  },
+  warning: {
+    backgroundColor: "rgba(251, 245, 180, 0.1)",
+    color: "#fbf5b4"
+  }
+};
+var iframeStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  width: "100vw",
+  height: "100vh",
+  border: "none",
+  "z-index": 9999999999
+};
+var containerStyle = {
+  position: "fixed",
+  boxSizing: "border-box",
+  left: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  width: "100vw",
+  height: "100vh",
+  fontSize: "large",
+  padding: "2rem 2rem 4rem 2rem",
+  lineHeight: "1.2",
+  whiteSpace: "pre-wrap",
+  overflow: "auto",
+  backgroundColor: "rgba(0, 0, 0, 0.9)",
+  color: "white"
+};
+var headerStyle = {
+  color: "#e83b46",
+  fontSize: "2em",
+  whiteSpace: "pre-wrap",
+  fontFamily: "sans-serif",
+  margin: "0 2rem 2rem 0",
+  flex: "0 0 auto",
+  maxHeight: "50%",
+  overflow: "auto"
+};
+var dismissButtonStyle = {
+  color: "#ffffff",
+  lineHeight: "1rem",
+  fontSize: "1.5rem",
+  padding: "1rem",
+  cursor: "pointer",
+  position: "absolute",
+  right: 0,
+  top: 0,
+  backgroundColor: "transparent",
+  border: "none"
+};
+var msgTypeStyle = {
+  color: "#e83b46",
+  fontSize: "1.2em",
+  marginBottom: "1rem",
+  fontFamily: "sans-serif"
+};
+var msgTextStyle = {
+  lineHeight: "1.5",
+  fontSize: "1rem",
+  fontFamily: "Menlo, Consolas, monospace"
+};
 
 
 /***/ }),
@@ -2764,7 +3066,7 @@ function show(type, messages, trustedTypesPolicyName) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "client": () => (/* binding */ client),
+/* harmony export */   client: () => (/* binding */ client),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _clients_WebSocketClient_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clients/WebSocketClient.js */ "./node_modules/webpack-dev-server/client/clients/WebSocketClient.js");
@@ -2772,31 +3074,33 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var __webpack_dev_server_client__ = __webpack_require__(/*! ./node_modules/webpack-dev-server/client/clients/WebSocketClient.js */ "./node_modules/webpack-dev-server/client/clients/WebSocketClient.js");
 /* global __webpack_dev_server_client__ */
 
- // this WebsocketClient is here as a default fallback, in case the client is not injected
 
+
+
+// this WebsocketClient is here as a default fallback, in case the client is not injected
 /* eslint-disable camelcase */
-
-var Client = // eslint-disable-next-line no-nested-ternary
+var Client =
+// eslint-disable-next-line no-nested-ternary
 typeof __webpack_dev_server_client__ !== "undefined" ? typeof __webpack_dev_server_client__.default !== "undefined" ? __webpack_dev_server_client__.default : __webpack_dev_server_client__ : _clients_WebSocketClient_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 /* eslint-enable camelcase */
 
 var retries = 0;
-var maxRetries = 10; // Initialized client is exported so external consumers can utilize the same instance
+var maxRetries = 10;
+
+// Initialized client is exported so external consumers can utilize the same instance
 // It is mutable to enforce singleton
 // eslint-disable-next-line import/no-mutable-exports
-
 var client = null;
+
 /**
  * @param {string} url
  * @param {{ [handler: string]: (data?: any, params?: any) => any }} handlers
  * @param {number} [reconnect]
  */
-
 var socket = function initSocket(url, handlers, reconnect) {
   client = new Client(url);
   client.onOpen(function () {
     retries = 0;
-
     if (typeof reconnect !== "undefined") {
       maxRetries = reconnect;
     }
@@ -2804,11 +3108,12 @@ var socket = function initSocket(url, handlers, reconnect) {
   client.onClose(function () {
     if (retries === 0) {
       handlers.close();
-    } // Try to reconnect.
+    }
 
+    // Try to reconnect.
+    client = null;
 
-    client = null; // After 10 retries stop trying, to prevent logspam.
-
+    // After 10 retries stop trying, to prevent logspam.
     if (retries < maxRetries) {
       // Exponentially increase timeout to reconnect.
       // Respectfully copied from the package `got`.
@@ -2827,13 +3132,11 @@ var socket = function initSocket(url, handlers, reconnect) {
    */
   function (data) {
     var message = JSON.parse(data);
-
     if (handlers[message.type]) {
       handlers[message.type](message.data, message.params);
     }
   });
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (socket);
 
 /***/ }),
@@ -2855,53 +3158,39 @@ __webpack_require__.r(__webpack_exports__);
  */
 function format(objURL) {
   var protocol = objURL.protocol || "";
-
   if (protocol && protocol.substr(-1) !== ":") {
     protocol += ":";
   }
-
   var auth = objURL.auth || "";
-
   if (auth) {
     auth = encodeURIComponent(auth);
     auth = auth.replace(/%3A/i, ":");
     auth += "@";
   }
-
   var host = "";
-
   if (objURL.hostname) {
     host = auth + (objURL.hostname.indexOf(":") === -1 ? objURL.hostname : "[".concat(objURL.hostname, "]"));
-
     if (objURL.port) {
       host += ":".concat(objURL.port);
     }
   }
-
   var pathname = objURL.pathname || "";
-
   if (objURL.slashes) {
     host = "//".concat(host || "");
-
     if (pathname && pathname.charAt(0) !== "/") {
       pathname = "/".concat(pathname);
     }
   } else if (!host) {
     host = "";
   }
-
   var search = objURL.search || "";
-
   if (search && search.charAt(0) !== "?") {
     search = "?".concat(search);
   }
-
   var hash = objURL.hash || "";
-
   if (hash && hash.charAt(0) !== "#") {
     hash = "#".concat(hash);
   }
-
   pathname = pathname.replace(/[?#]/g,
   /**
    * @param {string} match
@@ -2913,43 +3202,47 @@ function format(objURL) {
   search = search.replace("#", "%23");
   return "".concat(protocol).concat(host).concat(pathname).concat(search).concat(hash);
 }
+
 /**
  * @param {URL & { fromCurrentScript?: boolean }} parsedURL
  * @returns {string}
  */
-
-
 function createSocketURL(parsedURL) {
-  var hostname = parsedURL.hostname; // Node.js module parses it as `::`
-  // `new URL(urlString, [baseURLString])` parses it as '[::]'
+  var hostname = parsedURL.hostname;
 
-  var isInAddrAny = hostname === "0.0.0.0" || hostname === "::" || hostname === "[::]"; // why do we need this check?
+  // Node.js module parses it as `::`
+  // `new URL(urlString, [baseURLString])` parses it as '[::]'
+  var isInAddrAny = hostname === "0.0.0.0" || hostname === "::" || hostname === "[::]";
+
+  // why do we need this check?
   // hostname n/a for file protocol (example, when using electron, ionic)
   // see: https://github.com/webpack/webpack-dev-server/pull/384
-
   if (isInAddrAny && self.location.hostname && self.location.protocol.indexOf("http") === 0) {
     hostname = self.location.hostname;
   }
+  var socketURLProtocol = parsedURL.protocol || self.location.protocol;
 
-  var socketURLProtocol = parsedURL.protocol || self.location.protocol; // When https is used in the app, secure web sockets are always necessary because the browser doesn't accept non-secure web sockets.
-
+  // When https is used in the app, secure web sockets are always necessary because the browser doesn't accept non-secure web sockets.
   if (socketURLProtocol === "auto:" || hostname && isInAddrAny && self.location.protocol === "https:") {
     socketURLProtocol = self.location.protocol;
   }
-
   socketURLProtocol = socketURLProtocol.replace(/^(?:http|.+-extension|file)/i, "ws");
-  var socketURLAuth = ""; // `new URL(urlString, [baseURLstring])` doesn't have `auth` property
+  var socketURLAuth = "";
+
+  // `new URL(urlString, [baseURLstring])` doesn't have `auth` property
   // Parse authentication credentials in case we need them
-
   if (parsedURL.username) {
-    socketURLAuth = parsedURL.username; // Since HTTP basic authentication does not allow empty username,
-    // we only include password if the username is not empty.
+    socketURLAuth = parsedURL.username;
 
+    // Since HTTP basic authentication does not allow empty username,
+    // we only include password if the username is not empty.
     if (parsedURL.password) {
       // Result: <username>:<password>
       socketURLAuth = socketURLAuth.concat(":", parsedURL.password);
     }
-  } // In case the host is a raw IPv6 address, it can be enclosed in
+  }
+
+  // In case the host is a raw IPv6 address, it can be enclosed in
   // the brackets as the brackets are needed in the final URL string.
   // Need to remove those as url.format blindly adds its own set of brackets
   // if the host string contains colons. That would lead to non-working
@@ -2957,24 +3250,19 @@ function createSocketURL(parsedURL) {
   //
   // All of these web socket url params are optionally passed in through resourceQuery,
   // so we need to fall back to the default if they are not provided
-
-
   var socketURLHostname = (hostname || self.location.hostname || "localhost").replace(/^\[(.*)\]$/, "$1");
   var socketURLPort = parsedURL.port;
-
   if (!socketURLPort || socketURLPort === "0") {
     socketURLPort = self.location.port;
-  } // If path is provided it'll be passed in via the resourceQuery as a
+  }
+
+  // If path is provided it'll be passed in via the resourceQuery as a
   // query param so it has to be parsed out of the querystring in order for the
   // client to open the socket to the correct location.
-
-
   var socketURLPathname = "/ws";
-
   if (parsedURL.pathname && !parsedURL.fromCurrentScript) {
     socketURLPathname = parsedURL.pathname;
   }
-
   return format({
     protocol: socketURLProtocol,
     auth: socketURLAuth,
@@ -2984,7 +3272,6 @@ function createSocketURL(parsedURL) {
     slashes: true
   });
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createSocketURL);
 
 /***/ }),
@@ -3008,23 +3295,21 @@ function getCurrentScriptSource() {
   // but is not supported in all browsers.
   if (document.currentScript) {
     return document.currentScript.getAttribute("src");
-  } // Fallback to getting all scripts running in the document.
+  }
 
-
+  // Fallback to getting all scripts running in the document.
   var scriptElements = document.scripts || [];
   var scriptElementsWithSrc = Array.prototype.filter.call(scriptElements, function (element) {
     return element.getAttribute("src");
   });
-
   if (scriptElementsWithSrc.length > 0) {
     var currentScript = scriptElementsWithSrc[scriptElementsWithSrc.length - 1];
     return currentScript.getAttribute("src");
-  } // Fail as there was no script to use.
+  }
 
-
+  // Fail as there was no script to use.
   throw new Error("[webpack-dev-server] Failed to get current script source.");
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getCurrentScriptSource);
 
 /***/ }),
@@ -3038,30 +3323,46 @@ function getCurrentScriptSource() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "log": () => (/* binding */ log),
-/* harmony export */   "setLogLevel": () => (/* binding */ setLogLevel)
+/* harmony export */   log: () => (/* binding */ log),
+/* harmony export */   logEnabledFeatures: () => (/* binding */ logEnabledFeatures),
+/* harmony export */   setLogLevel: () => (/* binding */ setLogLevel)
 /* harmony export */ });
 /* harmony import */ var _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/logger/index.js */ "./node_modules/webpack-dev-server/client/modules/logger/index.js");
 /* harmony import */ var _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0__);
 
-var name = "webpack-dev-server"; // default level is set on the client side, so it does not need
+var name = "webpack-dev-server";
+// default level is set on the client side, so it does not need
 // to be set by the CLI or API
+var defaultLevel = "info";
 
-var defaultLevel = "info"; // options new options, merge with old options
-
+// options new options, merge with old options
 /**
  * @param {false | true | "none" | "error" | "warn" | "info" | "log" | "verbose"} level
  * @returns {void}
  */
-
 function setLogLevel(level) {
   _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default().configureDefaultLogger({
     level: level
   });
 }
-
 setLogLevel(defaultLevel);
 var log = _modules_logger_index_js__WEBPACK_IMPORTED_MODULE_0___default().getLogger(name);
+var logEnabledFeatures = function logEnabledFeatures(features) {
+  var enabledFeatures = Object.keys(features);
+  if (!features || enabledFeatures.length === 0) {
+    return;
+  }
+  var logString = "Server started:";
+
+  // Server started: Hot Module Replacement enabled, Live Reloading enabled, Overlay disabled.
+  for (var i = 0; i < enabledFeatures.length; i++) {
+    var key = enabledFeatures[i];
+    logString += " ".concat(key, " ").concat(features[key] ? "enabled" : "disabled", ",");
+  }
+  // replace last comma with a period
+  logString = logString.slice(0, -1).concat(".");
+  log.info(logString);
+};
 
 
 /***/ }),
@@ -3079,18 +3380,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _getCurrentScriptSource_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getCurrentScriptSource.js */ "./node_modules/webpack-dev-server/client/utils/getCurrentScriptSource.js");
 
+
 /**
  * @param {string} resourceQuery
  * @returns {{ [key: string]: string | boolean }}
  */
-
 function parseURL(resourceQuery) {
   /** @type {{ [key: string]: string }} */
   var options = {};
-
   if (typeof resourceQuery === "string" && resourceQuery !== "") {
     var searchParams = resourceQuery.slice(1).split("&");
-
     for (var i = 0; i < searchParams.length; i++) {
       var pair = searchParams[i].split("=");
       options[pair[0]] = decodeURIComponent(pair[1]);
@@ -3099,25 +3398,22 @@ function parseURL(resourceQuery) {
     // Else, get the url from the <script> this file was called with.
     var scriptSource = (0,_getCurrentScriptSource_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
     var scriptSourceURL;
-
     try {
       // The placeholder `baseURL` with `window.location.href`,
       // is to allow parsing of path-relative or protocol-relative URLs,
       // and will have no effect if `scriptSource` is a fully valid URL.
       scriptSourceURL = new URL(scriptSource, self.location.href);
-    } catch (error) {// URL parsing failed, do nothing.
+    } catch (error) {
+      // URL parsing failed, do nothing.
       // We will still proceed to see if we can recover using `resourceQuery`
     }
-
     if (scriptSourceURL) {
       options = scriptSourceURL;
       options.fromCurrentScript = true;
     }
   }
-
   return options;
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (parseURL);
 
 /***/ }),
@@ -3138,6 +3434,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _log_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./log.js */ "./node_modules/webpack-dev-server/client/utils/log.js");
 
 
+
 /** @typedef {import("../index").Options} Options
 /** @typedef {import("../index").Status} Status
 
@@ -3145,59 +3442,50 @@ __webpack_require__.r(__webpack_exports__);
  * @param {Options} options
  * @param {Status} status
  */
-
 function reloadApp(_ref, status) {
   var hot = _ref.hot,
-      liveReload = _ref.liveReload;
-
+    liveReload = _ref.liveReload;
   if (status.isUnloading) {
     return;
   }
-
   var currentHash = status.currentHash,
-      previousHash = status.previousHash;
-  var isInitial = currentHash.indexOf(
-  /** @type {string} */
-  previousHash) >= 0;
-
+    previousHash = status.previousHash;
+  var isInitial = currentHash.indexOf( /** @type {string} */previousHash) >= 0;
   if (isInitial) {
     return;
   }
+
   /**
    * @param {Window} rootWindow
    * @param {number} intervalId
    */
-
-
   function applyReload(rootWindow, intervalId) {
     clearInterval(intervalId);
     _log_js__WEBPACK_IMPORTED_MODULE_1__.log.info("App updated. Reloading...");
     rootWindow.location.reload();
   }
-
   var search = self.location.search.toLowerCase();
   var allowToHot = search.indexOf("webpack-dev-server-hot=false") === -1;
   var allowToLiveReload = search.indexOf("webpack-dev-server-live-reload=false") === -1;
-
   if (hot && allowToHot) {
     _log_js__WEBPACK_IMPORTED_MODULE_1__.log.info("App hot update...");
     webpack_hot_emitter_js__WEBPACK_IMPORTED_MODULE_0___default().emit("webpackHotUpdate", status.currentHash);
-
     if (typeof self !== "undefined" && self.window) {
       // broadcast update to window
       self.postMessage("webpackHotUpdate".concat(status.currentHash), "*");
     }
-  } // allow refreshing the page only if liveReload isn't disabled
+  }
+  // allow refreshing the page only if liveReload isn't disabled
   else if (liveReload && allowToLiveReload) {
-    var rootWindow = self; // use parent window for reload (in case we're in an iframe with no valid src)
+    var rootWindow = self;
 
+    // use parent window for reload (in case we're in an iframe with no valid src)
     var intervalId = self.setInterval(function () {
       if (rootWindow.location.protocol !== "about:") {
         // reload immediately if protocol is valid
         applyReload(rootWindow, intervalId);
       } else {
         rootWindow = rootWindow.parent;
-
         if (rootWindow.parent === rootWindow) {
           // if parent equals current window we've reached the root which would continue forever, so trigger a reload anyways
           applyReload(rootWindow, intervalId);
@@ -3206,7 +3494,6 @@ function reloadApp(_ref, status) {
     });
   }
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reloadApp);
 
 /***/ }),
@@ -3223,8 +3510,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* global __resourceQuery WorkerGlobalScope */
-// Send messages to the outside, so plugins can consume it.
 
+// Send messages to the outside, so plugins can consume it.
 /**
  * @param {string} type
  * @param {any} [data]
@@ -3237,7 +3524,6 @@ function sendMsg(type, data) {
     }, "*");
   }
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (sendMsg);
 
 /***/ }),
@@ -3254,6 +3540,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 var ansiRegex = new RegExp(["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)", "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"].join("|"), "g");
+
 /**
  *
  * Strip [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) from a string.
@@ -3263,15 +3550,12 @@ var ansiRegex = new RegExp(["[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\
  * @param {string} string
  * @return {string}
  */
-
 function stripAnsi(string) {
   if (typeof string !== "string") {
     throw new TypeError("Expected a `string`, got `".concat(typeof string, "`"));
   }
-
   return string.replace(ansiRegex, "");
 }
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (stripAnsi);
 
 /***/ }),
@@ -3288,9 +3572,10 @@ function stripAnsi(string) {
 */
 /* globals __webpack_hash__ */
 if (true) {
+	/** @type {undefined|string} */
 	var lastHash;
 	var upToDate = function upToDate() {
-		return lastHash.indexOf(__webpack_require__.h()) >= 0;
+		return /** @type {string} */ (lastHash).indexOf(__webpack_require__.h()) >= 0;
 	};
 	var log = __webpack_require__(/*! ./log */ "./node_modules/webpack/hot/log.js");
 	var check = function check() {
@@ -3298,12 +3583,20 @@ if (true) {
 			.check(true)
 			.then(function (updatedModules) {
 				if (!updatedModules) {
-					log("warning", "[HMR] Cannot find update. Need to do a full reload!");
+					log(
+						"warning",
+						"[HMR] Cannot find update. " +
+							(typeof window !== "undefined"
+								? "Need to do a full reload!"
+								: "Please reload manually!")
+					);
 					log(
 						"warning",
 						"[HMR] (Probably because of restarting the webpack-dev-server)"
 					);
-					window.location.reload();
+					if (typeof window !== "undefined") {
+						window.location.reload();
+					}
 					return;
 				}
 
@@ -3322,10 +3615,15 @@ if (true) {
 				if (["abort", "fail"].indexOf(status) >= 0) {
 					log(
 						"warning",
-						"[HMR] Cannot apply update. Need to do a full reload!"
+						"[HMR] Cannot apply update. " +
+							(typeof window !== "undefined"
+								? "Need to do a full reload!"
+								: "Please reload manually!")
 					);
 					log("warning", "[HMR] " + log.formatError(err));
-					window.location.reload();
+					if (typeof window !== "undefined") {
+						window.location.reload();
+					}
 				} else {
 					log("warning", "[HMR] Update failed: " + log.formatError(err));
 				}
@@ -3367,6 +3665,11 @@ module.exports = new EventEmitter();
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
+
+/**
+ * @param {(string | number)[]} updatedModules updated modules
+ * @param {(string | number)[] | null} renewedModules renewed modules
+ */
 module.exports = function (updatedModules, renewedModules) {
 	var unacceptedModules = updatedModules.filter(function (moduleId) {
 		return renewedModules && renewedModules.indexOf(moduleId) < 0;
@@ -3417,10 +3720,17 @@ module.exports = function (updatedModules, renewedModules) {
   \*****************************************/
 /***/ ((module) => {
 
+/** @typedef {"info" | "warning" | "error"} LogLevel */
+
+/** @type {LogLevel} */
 var logLevel = "info";
 
 function dummy() {}
 
+/**
+ * @param {LogLevel} level log level
+ * @returns {boolean} true, if should log
+ */
 function shouldLog(level) {
 	var shouldLog =
 		(logLevel === "info" && level === "info") ||
@@ -3429,6 +3739,10 @@ function shouldLog(level) {
 	return shouldLog;
 }
 
+/**
+ * @param {(msg?: string) => void} logFn log function
+ * @returns {(level: LogLevel, msg?: string) => void} function that logs when log level is sufficient
+ */
 function logGroup(logFn) {
 	return function (level, msg) {
 		if (shouldLog(level)) {
@@ -3437,6 +3751,10 @@ function logGroup(logFn) {
 	};
 }
 
+/**
+ * @param {LogLevel} level log level
+ * @param {string|Error} msg message
+ */
 module.exports = function (level, msg) {
 	if (shouldLog(level)) {
 		if (level === "info") {
@@ -3461,10 +3779,17 @@ module.exports.groupCollapsed = logGroup(groupCollapsed);
 
 module.exports.groupEnd = logGroup(groupEnd);
 
+/**
+ * @param {LogLevel} level log level
+ */
 module.exports.setLogLevel = function (level) {
 	logLevel = level;
 };
 
+/**
+ * @param {Error} err error
+ * @returns {string} formatted error
+ */
 module.exports.formatError = function (err) {
 	var message = err.message;
 	var stack = err.stack;
@@ -3574,7 +3899,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("a98b3dc540723613114b")
+/******/ 		__webpack_require__.h = () => ("2fd82a60ca19b8eb04d1")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -3597,7 +3922,7 @@ module.exports.formatError = function (err) {
 /******/ 	/* webpack/runtime/load script */
 /******/ 	(() => {
 /******/ 		var inProgress = {};
-/******/ 		var dataWebpackPrefix = "wecodeart:";
+/******/ 		var dataWebpackPrefix = "wecodeart-developer:";
 /******/ 		// loadScript function to load a script via script tag
 /******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
 /******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
@@ -3632,7 +3957,6 @@ module.exports.formatError = function (err) {
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
 /******/ 			}
-/******/ 			;
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);
@@ -4052,10 +4376,13 @@ module.exports.formatError = function (err) {
 /******/ 		var document = __webpack_require__.g.document;
 /******/ 		if (!scriptUrl && document) {
 /******/ 			if (document.currentScript)
-/******/ 				scriptUrl = document.currentScript.src
+/******/ 				scriptUrl = document.currentScript.src;
 /******/ 			if (!scriptUrl) {
 /******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+/******/ 				}
 /******/ 			}
 /******/ 		}
 /******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
@@ -4067,7 +4394,8 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/css loading */
 /******/ 	(() => {
-/******/ 		var createStylesheet = (chunkId, fullhref, resolve, reject) => {
+/******/ 		if (typeof document === "undefined") return;
+/******/ 		var createStylesheet = (chunkId, fullhref, oldTag, resolve, reject) => {
 /******/ 			var linkTag = document.createElement("link");
 /******/ 		
 /******/ 			linkTag.rel = "stylesheet";
@@ -4084,14 +4412,18 @@ module.exports.formatError = function (err) {
 /******/ 					err.code = "CSS_CHUNK_LOAD_FAILED";
 /******/ 					err.type = errorType;
 /******/ 					err.request = realHref;
-/******/ 					linkTag.parentNode.removeChild(linkTag)
+/******/ 					if (linkTag.parentNode) linkTag.parentNode.removeChild(linkTag)
 /******/ 					reject(err);
 /******/ 				}
 /******/ 			}
 /******/ 			linkTag.onerror = linkTag.onload = onLinkComplete;
 /******/ 			linkTag.href = fullhref;
 /******/ 		
-/******/ 			document.head.appendChild(linkTag);
+/******/ 			if (oldTag) {
+/******/ 				oldTag.parentNode.insertBefore(linkTag, oldTag.nextSibling);
+/******/ 			} else {
+/******/ 				document.head.appendChild(linkTag);
+/******/ 			}
 /******/ 			return linkTag;
 /******/ 		};
 /******/ 		var findStylesheet = (href, fullhref) => {
@@ -4113,7 +4445,7 @@ module.exports.formatError = function (err) {
 /******/ 				var href = __webpack_require__.miniCssF(chunkId);
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				if(findStylesheet(href, fullhref)) return resolve();
-/******/ 				createStylesheet(chunkId, fullhref, resolve, reject);
+/******/ 				createStylesheet(chunkId, fullhref, null, resolve, reject);
 /******/ 			});
 /******/ 		}
 /******/ 		// no chunk loading
@@ -4140,7 +4472,7 @@ module.exports.formatError = function (err) {
 /******/ 				var oldTag = findStylesheet(href, fullhref);
 /******/ 				if(!oldTag) return;
 /******/ 				promises.push(new Promise((resolve, reject) => {
-/******/ 					var tag = createStylesheet(chunkId, fullhref, () => {
+/******/ 					var tag = createStylesheet(chunkId, fullhref, oldTag, () => {
 /******/ 						tag.as = "style";
 /******/ 						tag.rel = "preload";
 /******/ 						resolve();
@@ -4195,7 +4527,7 @@ module.exports.formatError = function (err) {
 /******/ 			});
 /******/ 		}
 /******/ 		
-/******/ 		globalThis["webpackHotUpdatewecodeart"] = (chunkId, moreModules, runtime) => {
+/******/ 		globalThis["webpackHotUpdatewecodeart_developer"] = (chunkId, moreModules, runtime) => {
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
 /******/ 					currentUpdate[moduleId] = moreModules[moduleId];
@@ -4672,7 +5004,7 @@ module.exports.formatError = function (err) {
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	__webpack_require__("./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&reconnect=10");
+/******/ 	__webpack_require__("./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=localhost&port=8887&pathname=%2Fws&logging=info&overlay=true&reconnect=10&hot=true&live-reload=true");
 /******/ 	__webpack_require__("./node_modules/webpack/hot/dev-server.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/js/frontend.js");
 /******/ 	

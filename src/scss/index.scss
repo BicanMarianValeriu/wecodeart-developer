@@ -5,12 +5,12 @@ Theme URI: https://www.wecodeart.com/
 Author: Bican Marian Valeriu @wecodeart
 Author URI: https://www.iambican.com/
 Description: WeCodeArt Framework developer starter kit.
-Version: 2.1.2
-Requires PHP: 7.0
+Version: 2.1.3
+Requires PHP: 7.4
 Requires at least: 6.0
-Tested up to: 6.1
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 6.2
+License: GNU General Public License v3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: wecodeart-developer
 Domain Path: /languages
 Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar, custom-menu, custom-colors, custom-logo, custom-header, flexible-header, featured-images, full-width-template, footer-widgets, theme-options, threaded-comments, translation-ready
@@ -26,7 +26,7 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
 // @import "~bootstrap/scss/utilities";
 // @import "~bootstrap/scss/utilities/api";
 
-// This are loaded in main theme CSS
+// These are Gutenberg Blocks / loaded in main theme.
 // @import "~bootstrap/scss/root";
 // @import "~bootstrap/scss/reboot";
 // @import "~bootstrap/scss/type";
@@ -39,27 +39,28 @@ Tags: blog, one-column, two-columns, three-columns, left-sidebar, right-sidebar,
 // @import "~bootstrap/scss/offcanvas";
 // @import "~bootstrap/scss/close";
 // @import "~bootstrap/scss/helpers";
+// @import "~bootstrap/scss/tables";
+// @import "~bootstrap/scss/buttons";
+// @import "~bootstrap/scss/button-group";
+// @import "~bootstrap/scss/images";
+// @import "~bootstrap/scss/pagination";
+// @import "~bootstrap/scss/breadcrumb";
 
-@import "~bootstrap/scss/images";
-@import "~bootstrap/scss/tables";
-@import "~bootstrap/scss/buttons";
-@import "~bootstrap/scss/transitions";
-@import "~bootstrap/scss/button-group";
-@import "~bootstrap/scss/card";
-@import "~bootstrap/scss/breadcrumb";
-@import "~bootstrap/scss/pagination";
-@import "~bootstrap/scss/badge";
-@import "~bootstrap/scss/alert";
-@import "~bootstrap/scss/list-group";
-@import "~bootstrap/scss/popover";
-@import "~bootstrap/scss/spinners";
-@import "~bootstrap/scss/placeholders";
-@import "~bootstrap/scss/tooltip";
-@import "~bootstrap/scss/accordion";
-@import "~bootstrap/scss/progress";
-@import "~bootstrap/scss/toasts";
-@import "~bootstrap/scss/modal";
-@import "~bootstrap/scss/carousel";
+// Everything else, import as you need
+// @import "~bootstrap/scss/transitions";
+// @import "~bootstrap/scss/card";
+// @import "~bootstrap/scss/badge";
+// @import "~bootstrap/scss/alert";
+// @import "~bootstrap/scss/list-group";
+// @import "~bootstrap/scss/popover";
+// @import "~bootstrap/scss/spinners";
+// @import "~bootstrap/scss/placeholders";
+// @import "~bootstrap/scss/tooltip";
+// @import "~bootstrap/scss/accordion";
+// @import "~bootstrap/scss/progress";
+// @import "~bootstrap/scss/toasts";
+// @import "~bootstrap/scss/modal";
+// @import "~bootstrap/scss/carousel";
 
 // Custom
 @import "components/header";
