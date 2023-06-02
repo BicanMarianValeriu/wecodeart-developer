@@ -6,7 +6,7 @@
  * @subpackage	Scripts
  * @copyright	Copyright (c) 2023, WeCodeArt Dev
  * @link		https://www.wecodeart.com/
- * @since		2.1.3
+ * @since		2.1.4
  */
 
 namespace WeCodeArt\Dev;
@@ -26,6 +26,13 @@ class Scripts {
 	 * Send Construtor
 	 */
 	public function init() {
+		add_action( 'init', [ $this, 'assets' ] );
+	}
+
+	/**
+	 * Assets
+	 */
+	public function assets() {
 		wecodeart( 'assets' )->add_script( $this->make_handle(), [
 			'path' => self::get_file( 'js', 'frontend' ),
 			'deps' => [ 'wecodeart-support-assets' ]
