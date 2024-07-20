@@ -200,19 +200,16 @@ __webpack_require__.r(__webpack_exports__);
 // Styles
 
 
-// Attach Specific Route JS
-wecodeart = {
-  ...wecodeart,
-  ...{
-    routes: {
-      ...wecodeart.routes,
-      // See the body class theme-is-skin (camelCase in javascript)
-      themeIsSkin: {
-        init: () => console.log('Welcome from your skin JS!')
-      }
+// Scripts
+(function (wecodeart) {
+  wecodeart.routes = {
+    ...wecodeart.routes,
+    // See the body class theme-is-skin (camelCase in javascript)
+    themeIsSkin: {
+      init: () => console.log('Welcome from your skin JS!')
     }
-  }
-};
+  };
+}).apply(undefined, [window.wecodeart]);
 
 /***/ }),
 
@@ -1263,7 +1260,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1721491366667
+      // 1721491952642
       var cssReload = __webpack_require__(/*! ../../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -3899,7 +3896,7 @@ module.exports.formatError = function (err) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("3099a6e4960f9ebeacbe")
+/******/ 		__webpack_require__.h = () => ("07d03bb7b60636aea587")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

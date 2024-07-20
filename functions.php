@@ -7,7 +7,7 @@
  * @copyright   Copyright (c) 2024, WeCodeArt Dev
  * @link        https://www.wecodeart.com/
  * @since       1.0.0 
- * @version     3.0.0
+ * @version     2.1.5
  * 
  */
 namespace WeCodeArt\Dev;
@@ -15,7 +15,7 @@ namespace WeCodeArt\Dev;
 // Child theme (do not remove)
 define( 'CHILD_THEME_NAME', 	'WeCodeArt Developer' );
 define( 'CHILD_THEME_URL', 		'https://www.wecodeart.com/' );
-define( 'CHILD_THEME_VERSION', 	'3.0.0' ); 
+define( 'CHILD_THEME_VERSION', 	'2.1.5' ); 
 define( 'CHILD_THEME_NS',       'WeCodeArt\Dev' );
 define( 'CHILD_THEME_INC', 	    __DIR__ . '/inc' );
 
