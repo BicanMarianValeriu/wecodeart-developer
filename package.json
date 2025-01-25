@@ -1,13 +1,13 @@
 {
 	"name": "wecodeart-developer",
-	"version": "3.0.0",
+	"version": "2.1.6",
 	"main": "webpack.config.js",
 	"author": "Bican Marian Valeriu",
 	"browserslist": [
 		"extends @wordpress/browserslist-config"
 	],
 	"scripts": {
-		"start": "wp-scripts start --hot",
+		"start": "wp-scripts start",
 		"build": "wp-scripts build",
 		"start:custom": "wp-scripts start custom/index=./src/js/path-to/index.js --output-path=assets/unminified",
 		"build:custom": "wp-scripts build custom/index=./src/js/path-to/index.js --output-path=assets/minified",
@@ -18,9 +18,9 @@
 		"test:unit": "wp-scripts test-unit-js"
 	},
 	"dependencies": {
-		"@wordpress/browserslist-config": "^5.17.0",
-		"@wordpress/icons": "^9.2.0",
-		"@wordpress/scripts": "^26.5.0",
+		"@wordpress/browserslist-config": "^6.16.0",
+		"@wordpress/scripts": "^30.9.0",
+		"bootstrap": "^5.3.3",
 		"dploy": "^1.2.0"
 	}
 }
